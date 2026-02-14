@@ -28,13 +28,30 @@ body {
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-.logo {
+/* Brand Section (Logo + Text) */
+
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.brand-logo {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.logo-text {
     font-size: 32px;
     font-weight: bold;
-    margin-bottom: 8px;
     letter-spacing: 1px;
     color: #7c4dff;
 }
+
+/* Tagline */
 
 .tagline {
     font-size: 14px;
@@ -85,6 +102,37 @@ body {
     align-items: center;
 }
 
+.left-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Meeting Header Brand */
+
+.brand-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.app-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #7c4dff;
+}
+
+#room-display {
+    font-size: 13px;
+    color: #ccc;
+}
+
 #participant-count {
     font-size: 14px;
     color: #ccc;
@@ -98,7 +146,7 @@ body {
     overflow: hidden;
 }
 
-/* ================= VIDEO GRID (DEFAULT) ================= */
+/* ================= VIDEO GRID ================= */
 
 .video-grid {
     flex: 1;
@@ -121,8 +169,8 @@ body {
 .video-container video {
     width: 100%;
     height: 100%;
-    object-fit: contain;   /* 🔥 Prevent zoom */
-    background: black;     /* Black bars */
+    object-fit: contain;
+    background: black;
 }
 
 /* ================= FOCUS MODE ================= */
@@ -133,14 +181,10 @@ body {
     gap: 12px;
 }
 
-/* Big video on top */
-
 .video-grid.focus-mode .video-container.focused {
     width: 100%;
-    height: 65vh;   /* Large but not stretched */
+    height: 65vh;
 }
-
-/* Bottom row wrapper (created by JS) */
 
 .bottom-row {
     display: flex;
@@ -148,8 +192,6 @@ body {
     overflow-x: auto;
     padding-bottom: 5px;
 }
-
-/* Bottom thumbnails */
 
 .bottom-row .video-container {
     width: 220px;
@@ -230,8 +272,6 @@ body {
 .chat-bubble strong {
     color: #7c4dff;
 }
-
-/* Keep original chat input style */
 
 .chat-input {
     display: flex;
