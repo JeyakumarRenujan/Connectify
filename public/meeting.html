@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connectify Meeting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="meeting-body">
+
+<header class="top-bar">
+    <div class="left-header">
+        <h2 class="app-title">Connectify</h2>
+        <span id="room-display"></span>
+    </div>
+
+    <div class="right-header">
+        <span id="participant-count">Participants: 1</span>
+    </div>
+</header>
+
+<div class="main-container">
+
+    <!-- VIDEO GRID -->
+    <div id="video-grid" class="video-grid"></div>
+
+    <!-- CHAT PANEL -->
+    <div id="chat-panel" class="chat-panel">
+        <div class="chat-header">Chat</div>
+
+        <div id="messages" class="messages"></div>
+
+        <div class="chat-input">
+            <input type="text" id="chat-message" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+    <button class="control-btn" onclick="toggleMute()">🎤</button>
+    <button class="control-btn" onclick="toggleVideo()">📷</button>
+    <button class="control-btn" onclick="toggleChat()">💬</button>
+    <button class="control-btn end-call" onclick="endCall()">🔴 End</button>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

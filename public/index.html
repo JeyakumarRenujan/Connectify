@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connectify</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="join-body">
+
+    <div class="join-container">
+        <h1 class="logo">Connectify</h1>
+        <p class="tagline">Seamless Real-Time Communication</p>
+
+        <input type="text" id="username" placeholder="Enter Your Name" required>
+        <input type="text" id="roomId" placeholder="Enter Room ID" required>
+
+        <button onclick="joinRoom()">Join Room</button>
+    </div>
+
+<script>
+function joinRoom() {
+    const name = document.getElementById("username").value.trim();
+    const room = document.getElementById("roomId").value.trim();
+
+    if(name && room){
+        localStorage.setItem("username", name);
+        window.location.href = `meeting.html?room=${room}`;
+    } else {
+        alert("Please enter your name and room ID");
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,310 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+    color: white;
+}
+
+/* ================= JOIN PAGE ================= */
+
+.join-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.join-container {
+    background: #1e1e1e;
+    padding: 50px 40px;
+    border-radius: 15px;
+    text-align: center;
+    width: 340px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    color: #7c4dff;
+}
+
+.tagline {
+    font-size: 14px;
+    color: #bbbbbb;
+    margin-bottom: 25px;
+}
+
+.join-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: #2a2a2a;
+    color: white;
+}
+
+.join-container button {
+    width: 100%;
+    padding: 12px;
+    background: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.join-container button:hover {
+    background: #7c4dff;
+}
+
+/* ================= MEETING PAGE ================= */
+
+.meeting-body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Top Bar */
+
+.top-bar {
+    background: #1a1a1a;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#participant-count {
+    font-size: 14px;
+    color: #ccc;
+}
+
+/* ================= MAIN LAYOUT ================= */
+
+.main-container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* ================= VIDEO GRID (DEFAULT) ================= */
+
+.video-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+    padding: 12px;
+    transition: all 0.3s ease;
+}
+
+.video-container {
+    position: relative;
+    background: black;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;   /* 🔥 Prevent zoom */
+    background: black;     /* Black bars */
+}
+
+/* ================= FOCUS MODE ================= */
+
+.video-grid.focus-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Big video on top */
+
+.video-grid.focus-mode .video-container.focused {
+    width: 100%;
+    height: 65vh;   /* Large but not stretched */
+}
+
+/* Bottom row wrapper (created by JS) */
+
+.bottom-row {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+/* Bottom thumbnails */
+
+.bottom-row .video-container {
+    width: 220px;
+    height: 140px;
+    flex: 0 0 auto;
+}
+
+/* ================= LABELS & ICONS ================= */
+
+.video-label {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0,0,0,0.6);
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    z-index: 3;
+}
+
+.mute-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 18px;
+    background: rgba(0,0,0,0.6);
+    padding: 4px;
+    border-radius: 50%;
+    z-index: 4;
+}
+
+.avatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #2a2a2a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: white;
+    z-index: 1;
+}
+
+/* ================= CHAT PANEL ================= */
+
+.chat-panel {
+    width: 300px;
+    background: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #333;
+    transition: width 0.3s ease;
+}
+
+.chat-panel.hidden {
+    width: 0;
+    overflow: hidden;
+    border-left: none;
+}
+
+.messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.chat-bubble {
+    background: #2a2a2a;
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.chat-bubble strong {
+    color: #7c4dff;
+}
+
+/* Keep original chat input style */
+
+.chat-input {
+    display: flex;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+}
+
+.chat-input button {
+    padding: 10px;
+    border: none;
+    background: #6200ea;
+    color: white;
+    cursor: pointer;
+}
+
+/* ================= CONTROLS ================= */
+
+.controls {
+    background: #1a1a1a;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.control-btn {
+    background: #2a2a2a;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.control-btn:hover {
+    background: #444;
+}
+
+.end-call {
+    background: red;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+    .main-container {
+        flex-direction: column;
+    }
+
+    .video-grid.focus-mode .video-container.focused {
+        height: 45vh;
+    }
+
+    .bottom-row .video-container {
+        width: 150px;
+        height: 100px;
+    }
+
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chat-panel {
+        position: absolute;
+        right: -100%;
+        width: 100%;
+        height: 100%;
+    }
+}
