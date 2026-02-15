@@ -193,6 +193,11 @@ function addVideoStream(stream, id, name) {
     video.playsInline = true;
     video.id = id;
 
+    // 🔥 FIX: Mute only local video
+    if (id === "local") {
+        video.muted = true;
+    }
+
     const label = document.createElement("div");
     label.classList.add("video-label");
     label.innerText = id === "local" ? `You (${username})` : name;
