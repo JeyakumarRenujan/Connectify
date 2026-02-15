@@ -7,7 +7,7 @@ document.getElementById("room-display").innerText = "Room: " + roomId;
 
 let localStream;
 let peers = {};
-// let participantCount = 1;
+let participantCount = 1;
 let userNames = {};
 let localMuteStates = {};
 let localCameraStates = {};
@@ -237,14 +237,6 @@ function addVideoStream(stream, id, name) {
                 : (userNames[id]?.charAt(0).toUpperCase() || "?");
 
         container.appendChild(avatar);
-    }
-}
-
-function updateParticipantCount() {
-    const counter = document.getElementById("participant-count");
-    const total = document.querySelectorAll(".video-container").length;
-    if (counter) {
-        counter.innerText = "Participants: " + total;
     }
 }
 
