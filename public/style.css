@@ -364,3 +364,7 @@ body {
     transform: scaleX(-1);
 }
 
+/* Mirror ALL videos (local + remote) */
+.video-container video {
+    transform: scaleX(-1);
+}
