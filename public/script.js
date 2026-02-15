@@ -21,7 +21,11 @@ async function init() {
 
     localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
-        audio: true
+        audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+        }
     });
 
     addVideoStream(localStream, "local", username);
