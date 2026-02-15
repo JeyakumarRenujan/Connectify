@@ -51,8 +51,6 @@ async function init() {
     socket.on("user-connected", (userId, remoteName) => {
         userNames[userId] = remoteName;
         connectToNewUser(userId);
-        participantCount++;
-        updateParticipantCount();
     });
 
     socket.on("offer", async (offer, userId, remoteName) => {
@@ -139,7 +137,6 @@ async function init() {
         delete localMuteStates[userId];
         delete localCameraStates[userId];
 
-        participantCount--;
         updateParticipantCount();
 
         if (focusedId === userId) {
@@ -220,6 +217,8 @@ function addVideoStream(stream, id, name) {
     container.appendChild(muteIcon);
 
     videoGrid.appendChild(container);
+
+    updateParticipantCount();
 
     // 🔥 VERY IMPORTANT FIX
     // Apply stored camera state AFTER video is added
@@ -385,6 +384,7 @@ function toggleChat() {
 
 function updateParticipantCount() {
     const counter = document.getElementById("participant-count");
+    participantCount = document.querySelectorAll(".video-container").length;
     if (counter) {
         counter.innerText = "Participants: " + participantCount;
     }
