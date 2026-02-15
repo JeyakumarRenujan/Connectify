@@ -358,3 +358,9 @@ body {
         height: 100%;
     }
 }
+
+/* Mirror only local video */
+#local {
+    transform: scaleX(-1);
+}
+
