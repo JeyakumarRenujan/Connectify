@@ -21,6 +21,13 @@ let pipAnimationFrame = null;
 let pipStream = null;
 /* ================================================================ */
 
+/* ================= SCREEN SHARE VARIABLES ================= */
+let isScreenSharing = false;
+let cameraTrack = null;
+let screenTrack = null;
+let screenShareStream = null;
+/* ========================================================= */
+
 const configuration = {
     iceServers: [
         { urls: "stun:stun.l.google.com:19302" },
@@ -42,6 +49,8 @@ async function init() {
             autoGainControl: true
         }
     });
+
+    cameraTrack = localStream.getVideoTracks()[0];
 
     addVideoStream(localStream, "local", username);
     updateParticipantCount();
@@ -384,6 +393,108 @@ function toggleVideo() {
     socket.emit("camera-status", isOn);
 }
 
+/* ================= SCREEN SHARE ================= */
+
+async function toggleScreenShare() {
+    if (isScreenSharing) {
+        await stopScreenShare();
+    } else {
+        await startScreenShare();
+    }
+}
+
+async function startScreenShare() {
+    try {
+        screenShareStream = await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: false
+        });
+
+        screenTrack = screenShareStream.getVideoTracks()[0];
+        if (!screenTrack) return;
+
+        const oldTrack = localStream.getVideoTracks()[0];
+
+        localStream.removeTrack(oldTrack);
+        localStream.addTrack(screenTrack);
+
+        replaceVideoTrackForAllPeers(screenTrack);
+
+        const localVideo = document.getElementById("local");
+        if (localVideo) {
+            localVideo.srcObject = localStream;
+            localVideo.style.transform = "none";
+        }
+
+        isScreenSharing = true;
+
+        const btn = document.getElementById("screen-share-btn");
+        if (btn) btn.innerText = "⛔";
+
+        screenTrack.onended = async () => {
+            if (isScreenSharing) {
+                await stopScreenShare();
+            }
+        };
+    } catch (error) {
+        console.error("Screen share error:", error);
+        alert("Screen sharing failed or was cancelled");
+    }
+}
+
+async function stopScreenShare() {
+    try {
+        if (!cameraTrack || !screenTrack) return;
+
+        const currentTrack = localStream.getVideoTracks()[0];
+
+        if (currentTrack) {
+            localStream.removeTrack(currentTrack);
+        }
+
+        localStream.addTrack(cameraTrack);
+
+        replaceVideoTrackForAllPeers(cameraTrack);
+
+        const localVideo = document.getElementById("local");
+        if (localVideo) {
+            localVideo.srcObject = localStream;
+            localVideo.style.transform = "scaleX(-1)";
+        }
+
+        if (screenTrack) {
+            screenTrack.stop();
+        }
+
+        if (screenShareStream) {
+            screenShareStream.getTracks().forEach(track => track.stop());
+        }
+
+        screenTrack = null;
+        screenShareStream = null;
+        isScreenSharing = false;
+
+        const btn = document.getElementById("screen-share-btn");
+        if (btn) btn.innerText = "🖥️";
+    } catch (error) {
+        console.error("Stop screen share error:", error);
+    }
+}
+
+function replaceVideoTrackForAllPeers(newTrack) {
+    Object.values(peers).forEach(peer => {
+        const sender = peer.getSenders().find(s =>
+            s.track && s.track.kind === "video"
+        );
+
+        if (sender) {
+            sender.replaceTrack(newTrack);
+        }
+    });
+}
+
+/* =============================================== */
+
 function toggleChat() {
     const chat = document.getElementById("chat-panel");
     chat.classList.toggle("hidden");
@@ -524,6 +635,10 @@ function endCall() {
     if (!confirmEnd) return;
 
     stopMirroredPiP();
+
+    if (isScreenSharing) {
+        stopScreenShare();
+    }
 
     localStream.getTracks().forEach(track => track.stop());
     Object.values(peers).forEach(peer => peer.close());
