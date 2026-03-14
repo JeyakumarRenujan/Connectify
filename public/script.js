@@ -13,6 +13,14 @@ let localMuteStates = {};
 let localCameraStates = {};
 let focusedId = null;   // 🔥 focus state
 
+/* ================= CUSTOM MIRRORED PIP VARIABLES ================= */
+let pipCanvas = null;
+let pipContext = null;
+let pipVideo = null;
+let pipAnimationFrame = null;
+let pipStream = null;
+/* ================================================================ */
+
 const configuration = {
     iceServers: [
         { urls: "stun:stun.l.google.com:19302" },
@@ -376,7 +384,6 @@ function toggleVideo() {
     socket.emit("camera-status", isOn);
 }
 
-
 function toggleChat() {
     const chat = document.getElementById("chat-panel");
     chat.classList.toggle("hidden");
@@ -390,10 +397,133 @@ function updateParticipantCount() {
     }
 }
 
+/* ================= CUSTOM MIRRORED PIP ================= */
+
+async function startMirroredPiP() {
+    const localVideo = document.getElementById("local");
+
+    if (!localVideo) {
+        alert("Local video not found");
+        return;
+    }
+
+    if (!localVideo.srcObject) {
+        alert("Local video stream not ready");
+        return;
+    }
+
+    if (!pipCanvas) {
+        pipCanvas = document.createElement("canvas");
+        pipContext = pipCanvas.getContext("2d");
+    }
+
+    if (!pipVideo) {
+        pipVideo = document.createElement("video");
+        pipVideo.autoplay = true;
+        pipVideo.muted = true;
+        pipVideo.playsInline = true;
+        pipVideo.style.position = "fixed";
+        pipVideo.style.left = "-9999px";
+        pipVideo.style.width = "1px";
+        pipVideo.style.height = "1px";
+        pipVideo.style.opacity = "0";
+        document.body.appendChild(pipVideo);
+    }
+
+    const width = localVideo.videoWidth || 640;
+    const height = localVideo.videoHeight || 480;
+
+    pipCanvas.width = width;
+    pipCanvas.height = height;
+
+    function drawMirroredFrame() {
+        if (!localVideo.srcObject) return;
+
+        pipContext.clearRect(0, 0, width, height);
+        pipContext.save();
+        pipContext.translate(width, 0);
+        pipContext.scale(-1, 1);
+        pipContext.drawImage(localVideo, 0, 0, width, height);
+        pipContext.restore();
+
+        pipAnimationFrame = requestAnimationFrame(drawMirroredFrame);
+    }
+
+    if (pipAnimationFrame) {
+        cancelAnimationFrame(pipAnimationFrame);
+    }
+
+    drawMirroredFrame();
+
+    if (pipStream) {
+        pipStream.getTracks().forEach(track => track.stop());
+    }
+
+    pipStream = pipCanvas.captureStream(25);
+    pipVideo.srcObject = pipStream;
+
+    await pipVideo.play();
+
+    if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+    }
+
+    await pipVideo.requestPictureInPicture();
+}
+
+async function stopMirroredPiP() {
+    if (document.pictureInPictureElement) {
+        try {
+            await document.exitPictureInPicture();
+        } catch (error) {
+            console.log("PiP exit error:", error);
+        }
+    }
+
+    if (pipAnimationFrame) {
+        cancelAnimationFrame(pipAnimationFrame);
+        pipAnimationFrame = null;
+    }
+
+    if (pipStream) {
+        pipStream.getTracks().forEach(track => track.stop());
+        pipStream = null;
+    }
+}
+
+async function toggleMirroredPiP() {
+    try {
+        if (document.pictureInPictureElement) {
+            await stopMirroredPiP();
+        } else {
+            await startMirroredPiP();
+        }
+    } catch (error) {
+        console.error("Custom mirrored PiP error:", error);
+        alert("Mirrored PiP failed on this browser");
+    }
+}
+
+document.addEventListener("leavepictureinpicture", () => {
+    if (pipAnimationFrame) {
+        cancelAnimationFrame(pipAnimationFrame);
+        pipAnimationFrame = null;
+    }
+
+    if (pipStream) {
+        pipStream.getTracks().forEach(track => track.stop());
+        pipStream = null;
+    }
+});
+
+/* ==================================================== */
+
 function endCall() {
 
     const confirmEnd = confirm("Are you sure you want to leave the meeting?");
     if (!confirmEnd) return;
+
+    stopMirroredPiP();
 
     localStream.getTracks().forEach(track => track.stop());
     Object.values(peers).forEach(peer => peer.close());
