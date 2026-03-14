@@ -426,6 +426,8 @@ async function startScreenShare() {
             localVideo.style.transform = "none";
         }
 
+        showPresentingState();
+
         isScreenSharing = true;
 
         const btn = document.getElementById("screen-share-btn");
@@ -462,6 +464,8 @@ async function stopScreenShare() {
             localVideo.style.transform = "scaleX(-1)";
         }
 
+        hidePresentingState();
+
         if (screenTrack) {
             screenTrack.stop();
         }
@@ -491,6 +495,43 @@ function replaceVideoTrackForAllPeers(newTrack) {
             sender.replaceTrack(newTrack);
         }
     });
+}
+
+function showPresentingState() {
+    const container = document.getElementById("container-local");
+    const video = document.getElementById("local");
+
+    if (!container) return;
+
+    if (video) {
+        video.style.display = "none";
+    }
+
+    let presentingBadge = document.getElementById("presenting-local");
+
+    if (!presentingBadge) {
+        presentingBadge = document.createElement("div");
+        presentingBadge.classList.add("presenting-badge");
+        presentingBadge.id = "presenting-local";
+        presentingBadge.innerHTML = `
+            <div class="presenting-icon">🖥️</div>
+            <div class="presenting-text">You are presenting</div>
+        `;
+        container.appendChild(presentingBadge);
+    }
+}
+
+function hidePresentingState() {
+    const video = document.getElementById("local");
+    const presentingBadge = document.getElementById("presenting-local");
+
+    if (video) {
+        video.style.display = "block";
+    }
+
+    if (presentingBadge) {
+        presentingBadge.remove();
+    }
 }
 
 /* =============================================== */
@@ -639,6 +680,8 @@ function endCall() {
     if (isScreenSharing) {
         stopScreenShare();
     }
+
+    hidePresentingState();
 
     localStream.getTracks().forEach(track => track.stop());
     Object.values(peers).forEach(peer => peer.close());
