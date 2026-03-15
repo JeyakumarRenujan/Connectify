@@ -13,10 +13,17 @@ body {
 /* ================= JOIN PAGE ================= */
 
 .join-body {
+    min-height: 100vh;
+}
+
+.join-page-wrapper {
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    padding: 30px 20px;
+    gap: 35px;
 }
 
 .join-container {
@@ -86,6 +93,44 @@ body {
 
 .join-container button:hover {
     background: #7c4dff;
+}
+
+/* ================= TEAM FOOTER ================= */
+
+.team-footer {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 25px;
+    flex-wrap: wrap;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.team-member-card {
+    min-width: 180px;
+    text-align: center;
+    padding: 10px 14px;
+}
+
+.team-name {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ddd;
+    margin-bottom: 8px;
+}
+
+.team-member-card a {
+    color: #7c4dff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.team-member-card a:hover {
+    text-decoration: underline;
 }
 
 /* ================= MEETING PAGE ================= */
@@ -291,6 +336,10 @@ body {
     color: #7c4dff;
 }
 
+.chat-bubble.private {
+    background: #3a2a5a;
+}
+
 .chat-input {
     display: flex;
 }
@@ -332,6 +381,7 @@ body {
 
 .control-btn:hover {
     background: #444;
+    transform: translateY(-1px);
 }
 
 .end-call {
@@ -366,6 +416,11 @@ body {
         width: 100%;
         height: 100%;
     }
+
+    .team-footer {
+        flex-direction: column;
+        gap: 8px;
+    }
 }
 
 /* Mirror only local video */
@@ -378,7 +433,7 @@ body {
     transform: scaleX(-1);
 }
 
-/* 🚀 DO NOT mirror screen share */
+/* DO NOT mirror screen share */
 .video-container video.screen-share-video {
     transform: none !important;
 }
@@ -408,39 +463,9 @@ body {
     color: #ddd;
 }
 
-/* ================= TEAM SECTION ================= */
-
-.team-section{
-    margin-top: 25px;
-    border-top: 1px solid #333;
-    padding-top: 15px;
-}
-
-.team-section h3{
-    font-size: 14px;
-    color: #aaa;
-    margin-bottom: 10px;
-}
-
-.team-member{
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    margin-bottom: 6px;
-}
-
-.team-member a{
-    color: #7c4dff;
-    text-decoration: none;
-}
-
-.team-member a:hover{
-    text-decoration: underline;
-}
-
 /* ================= MEETING TIMER ================= */
 
-.meeting-timer{
+.meeting-timer {
     font-size: 13px;
     color: #7c4dff;
     background: rgba(124,77,255,0.15);
@@ -450,12 +475,12 @@ body {
 
 /* ================= CHAT MODE SELECT ================= */
 
-.chat-mode{
+.chat-mode {
     padding: 6px 10px;
     border-bottom: 1px solid #333;
 }
 
-.chat-mode select{
+.chat-mode select {
     width: 100%;
     padding: 6px;
     background: #2a2a2a;
@@ -463,25 +488,4 @@ body {
     border: none;
     border-radius: 6px;
     font-size: 13px;
-}
-
-/* ================= PRIVATE MESSAGE STYLE ================= */
-
-.chat-bubble.private{
-    background: #3a2a5a;
-}
-
-/* ================= CONTROL BUTTON STATES ================= */
-
-.control-btn.active{
-    background: #7c4dff;
-}
-
-.control-btn.off{
-    background: #a00000;
-}
-
-/* nicer hover effect */
-.control-btn:hover{
-    transform: translateY(-1px);
 }

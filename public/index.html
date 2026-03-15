@@ -8,41 +8,40 @@
 </head>
 <body class="join-body">
 
-    <div class="join-container">
+    <div class="join-page-wrapper">
 
-        <!-- Brand Section (Logo + Name) -->
-        <div class="brand">
-            <img src="images/logo.png" alt="Connectify Logo" class="brand-logo">
-            <h1 class="logo-text">Connectify</h1>
+        <div class="join-container">
+
+            <!-- Brand Section (Logo + Name) -->
+            <div class="brand">
+                <img src="images/logo.png" alt="Connectify Logo" class="brand-logo">
+                <h1 class="logo-text">Connectify</h1>
+            </div>
+
+            <p class="tagline">Seamless Real-Time Communication</p>
+
+            <input type="text" id="username" placeholder="Enter Your Name" required>
+            <input type="text" id="roomId" placeholder="Enter Room ID" required>
+
+            <button onclick="joinRoom()">Join Room</button>
         </div>
 
-        <p class="tagline">Seamless Real-Time Communication</p>
-
-        <input type="text" id="username" placeholder="Enter Your Name" required>
-        <input type="text" id="roomId" placeholder="Enter Room ID" required>
-
-        <button onclick="joinRoom()">Join Room</button>
-
         <!-- ================= TEAM SECTION ================= -->
-
-        <div class="team-section">
-            <h3>Project Team</h3>
-
-            <div class="team-member">
-                <span>Member 1</span>
+        <div class="team-footer">
+            <div class="team-member-card">
+                <span class="team-name">Member 1</span>
                 <a href="#" target="_blank">LinkedIn</a>
             </div>
 
-            <div class="team-member">
-                <span>Member 2</span>
+            <div class="team-member-card">
+                <span class="team-name">Member 2</span>
                 <a href="#" target="_blank">LinkedIn</a>
             </div>
 
-            <div class="team-member">
-                <span>Member 3</span>
+            <div class="team-member-card">
+                <span class="team-name">Member 3</span>
                 <a href="#" target="_blank">LinkedIn</a>
             </div>
-
         </div>
 
     </div>
