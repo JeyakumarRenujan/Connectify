@@ -90,6 +90,24 @@
 
 <div id="toast-container" class="toast-container"></div>
 
+<div id="leave-meeting-modal" class="custom-modal-overlay">
+    <div class="custom-modal">
+        <div class="custom-modal-icon">
+            <i class="fa-solid fa-phone-slash"></i>
+        </div>
+
+        <h3 class="custom-modal-title">Leave meeting?</h3>
+        <p class="custom-modal-text">
+            Are you sure you want to leave this Connectify meeting?
+        </p>
+
+        <div class="custom-modal-actions">
+            <button class="modal-btn modal-btn-secondary" onclick="closeLeaveModal()">Cancel</button>
+            <button class="modal-btn modal-btn-danger" onclick="confirmEndCall()">Leave</button>
+        </div>
+    </div>
+</div>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="script.js"></script>
 

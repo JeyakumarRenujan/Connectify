@@ -949,8 +949,21 @@ document.addEventListener("leavepictureinpicture", () => {
 });
 
 function endCall() {
-    const confirmEnd = confirm("Are you sure you want to leave the meeting?");
-    if (!confirmEnd) return;
+    const modal = document.getElementById("leave-meeting-modal");
+    if (modal) {
+        modal.classList.add("show");
+    }
+}
+
+function closeLeaveModal() {
+    const modal = document.getElementById("leave-meeting-modal");
+    if (modal) {
+        modal.classList.remove("show");
+    }
+}
+
+function confirmEndCall() {
+    closeLeaveModal();
 
     stopMirroredPiP();
 
@@ -964,7 +977,10 @@ function endCall() {
         clearInterval(meetingTimerInterval);
     }
 
-    localStream.getTracks().forEach(track => track.stop());
+    if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+    }
+
     Object.values(peers).forEach(peer => peer.close());
 
     window.location.href = "/";
