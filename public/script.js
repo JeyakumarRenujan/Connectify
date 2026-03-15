@@ -12,7 +12,7 @@ let userNames = {};
 let localMuteStates = {};
 let localCameraStates = {};
 let localScreenShareStates = {};
-let focusedId = null;   // 🔥 focus state
+let focusedId = null;
 
 /* ================= CUSTOM MIRRORED PIP VARIABLES ================= */
 let pipCanvas = null;
@@ -71,6 +71,23 @@ async function init() {
             }
         });
 
+    socket.on("room-start-time", (startTime) => {
+        meetingStartTime = startTime;
+
+        if (meetingTimerInterval) {
+            clearInterval(meetingTimerInterval);
+        }
+
+        startMeetingTimer();
+    });
+
+    socket.on("existing-users", (existingUsers) => {
+        existingUsers.forEach((user) => {
+            userNames[user.userId] = user.username;
+            addUserToChatList(user.userId, user.username);
+        });
+    });
+
     socket.on("user-connected", (userId, remoteName) => {
         userNames[userId] = remoteName;
         connectToNewUser(userId);
@@ -78,8 +95,8 @@ async function init() {
     });
 
     socket.on("offer", async (offer, userId, remoteName) => {
-
         userNames[userId] = remoteName;
+        addUserToChatList(userId, remoteName);
 
         const peer = createPeerConnection(userId);
 
@@ -111,6 +128,10 @@ async function init() {
         addMessage(sender, message);
     });
 
+    socket.on("private-message", (sender, message) => {
+        addMessage(sender + " (Private)", message, true);
+    });
+
     socket.on("mute-status", (userId, isMuted) => {
         localMuteStates[userId] = isMuted;
         const icon = document.getElementById("mute-" + userId);
@@ -118,7 +139,6 @@ async function init() {
     });
 
     socket.on("camera-status", (userId, isOn) => {
-
         localCameraStates[userId] = isOn;
 
         const container = document.getElementById("container-" + userId);
@@ -128,7 +148,6 @@ async function init() {
         let avatar = document.getElementById("avatar-" + userId);
 
         if (!isOn) {
-
             if (!avatar) {
                 avatar = document.createElement("div");
                 avatar.classList.add("avatar");
@@ -139,9 +158,7 @@ async function init() {
             }
 
             if (video) video.style.display = "none";
-
         } else {
-
             if (video) video.style.display = "block";
             if (avatar) avatar.remove();
         }
@@ -161,7 +178,6 @@ async function init() {
     });
 
     socket.on("user-disconnected", (userId) => {
-
         if (peers[userId]) {
             peers[userId].close();
             delete peers[userId];
@@ -175,22 +191,16 @@ async function init() {
         delete localCameraStates[userId];
         delete localScreenShareStates[userId];
 
+        removeUserFromChatList(userId);
         updateParticipantCount();
 
         if (focusedId === userId) {
             removeFocusMode();
         }
     });
-
-    socket.on("private-message", (sender, message) => {
-        addMessage(sender + " (Private)", message, true);
-    });
-
-    startMeetingTimer();
 }
 
 function createPeerConnection(userId) {
-
     const peer = new RTCPeerConnection(configuration);
 
     localStream.getTracks().forEach(track => {
@@ -198,7 +208,6 @@ function createPeerConnection(userId) {
     });
 
     peer.ontrack = (event) => {
-
         if (document.getElementById("container-" + userId)) return;
 
         const remoteName = userNames[userId] || "Participant";
@@ -216,7 +225,6 @@ function createPeerConnection(userId) {
 }
 
 async function connectToNewUser(userId) {
-
     const peer = createPeerConnection(userId);
 
     const offer = await peer.createOffer();
@@ -226,7 +234,6 @@ async function connectToNewUser(userId) {
 }
 
 function addVideoStream(stream, id, name) {
-
     if (document.getElementById("container-" + id)) return;
 
     const container = document.createElement("div");
@@ -241,12 +248,10 @@ function addVideoStream(stream, id, name) {
     video.playsInline = true;
     video.id = id;
 
-    // 🔥 FIX: Mute only local video
     if (id === "local") {
         video.muted = true;
     }
 
-    // Apply screen share class if this user is currently sharing
     if (localScreenShareStates[id]) {
         video.classList.add("screen-share-video");
     }
@@ -269,11 +274,7 @@ function addVideoStream(stream, id, name) {
 
     updateParticipantCount();
 
-    // 🔥 VERY IMPORTANT FIX
-    // Apply stored camera state AFTER video is added
-
     if (localCameraStates[id] === false) {
-
         video.style.display = "none";
 
         const avatar = document.createElement("div");
@@ -291,7 +292,6 @@ function addVideoStream(stream, id, name) {
 /* ================= FOCUS MODE ================= */
 
 function toggleFocus(id) {
-
     if (focusedId === id) {
         removeFocusMode();
         return;
@@ -301,16 +301,12 @@ function toggleFocus(id) {
     videoGrid.classList.add("focus-mode");
 
     const allContainers = Array.from(document.querySelectorAll(".video-container"));
-
     const focusedContainer = document.getElementById("container-" + id);
     if (!focusedContainer) return;
 
     focusedContainer.classList.add("focused");
-
-    // Move focused video to top
     videoGrid.prepend(focusedContainer);
 
-    // Create bottom row
     let bottomRow = document.querySelector(".bottom-row");
     if (!bottomRow) {
         bottomRow = document.createElement("div");
@@ -329,7 +325,6 @@ function toggleFocus(id) {
 }
 
 function removeFocusMode() {
-
     focusedId = null;
     videoGrid.classList.remove("focus-mode");
 
@@ -349,7 +344,6 @@ function removeFocusMode() {
 /* ================= CHAT ================= */
 
 function sendMessage() {
-
     const input = document.getElementById("chat-message");
     const target = document.getElementById("chat-target");
 
@@ -359,31 +353,27 @@ function sendMessage() {
     const targetId = target.value;
 
     if (targetId === "group") {
-
         socket.emit("chat-message", message);
-
     } else {
-
         socket.emit("private-message", {
             targetId: targetId,
             message: message
         });
 
-        addMessage("You (Private)", message);
+        addMessage("You (Private)", message, true);
     }
 
     input.value = "";
 }
 
 function addMessage(sender, message, isPrivate = false) {
-
     const messages = document.getElementById("messages");
 
     const div = document.createElement("div");
     div.classList.add("chat-bubble");
 
     if (isPrivate) {
-        div.style.background = "#3a2a5a";
+        div.classList.add("private");
     }
 
     div.innerHTML = `<strong>${sender}</strong><br>${message}`;
@@ -392,10 +382,30 @@ function addMessage(sender, message, isPrivate = false) {
     messages.scrollTop = messages.scrollHeight;
 }
 
+function addUserToChatList(userId, name) {
+    const select = document.getElementById("chat-target");
+    if (!select) return;
+
+    if (select.querySelector(`option[value="${userId}"]`)) return;
+
+    const option = document.createElement("option");
+    option.value = userId;
+    option.text = "Private: " + name;
+
+    select.appendChild(option);
+}
+
+function removeUserFromChatList(userId) {
+    const select = document.getElementById("chat-target");
+    if (!select) return;
+
+    const option = select.querySelector(`option[value="${userId}"]`);
+    if (option) option.remove();
+}
+
 /* ================= MEDIA CONTROLS ================= */
 
 function toggleMute() {
-
     const audioTrack = localStream.getAudioTracks()[0];
     audioTrack.enabled = !audioTrack.enabled;
 
@@ -414,12 +424,10 @@ function toggleMute() {
 }
 
 function toggleVideo() {
-
     const videoTrack = localStream.getVideoTracks()[0];
     videoTrack.enabled = !videoTrack.enabled;
 
     const isOn = videoTrack.enabled;
-
     localCameraStates["local"] = isOn;
 
     const container = document.getElementById("container-local");
@@ -427,11 +435,8 @@ function toggleVideo() {
     let avatar = document.getElementById("avatar-local");
 
     if (!isOn) {
-
-        // 🔥 Hide video
         if (video) video.style.display = "none";
 
-        // 🔥 Show avatar if not exists
         if (!avatar) {
             avatar = document.createElement("div");
             avatar.classList.add("avatar");
@@ -439,23 +444,17 @@ function toggleVideo() {
             avatar.innerText = username.charAt(0).toUpperCase();
             container.appendChild(avatar);
         }
-
     } else {
-
-        // 🔥 Show video again
         if (video) video.style.display = "block";
-
-        // 🔥 Remove avatar
         if (avatar) avatar.remove();
     }
 
-    // 🔥 Inform others
-    socket.emit("camera-status", isOn);
-}
+    const btn = document.getElementById("camera-btn");
+    if (btn) {
+        btn.innerText = isOn ? "📷" : "🚫📷";
+    }
 
-const btn = document.getElementById("camera-btn");
-if (btn) {
-    btn.innerText = isOn ? "📷" : "🚫📷";
+    socket.emit("camera-status", isOn);
 }
 
 /* ================= SCREEN SHARE ================= */
@@ -517,13 +516,11 @@ async function stopScreenShare() {
         if (!cameraTrack || !screenTrack) return;
 
         const currentTrack = localStream.getVideoTracks()[0];
-
         if (currentTrack) {
             localStream.removeTrack(currentTrack);
         }
 
         localStream.addTrack(cameraTrack);
-
         replaceVideoTrackForAllPeers(cameraTrack);
 
         const localVideo = document.getElementById("local");
@@ -623,12 +620,10 @@ function updateParticipantCount() {
 /* ================= MEETING TIMER ================= */
 
 function startMeetingTimer() {
-
     const timerElement = document.getElementById("meeting-timer");
     if (!timerElement) return;
 
     meetingTimerInterval = setInterval(() => {
-
         const now = Date.now();
         const diff = now - meetingStartTime;
 
@@ -640,7 +635,6 @@ function startMeetingTimer() {
             String(hours).padStart(2, '0') + ":" +
             String(minutes).padStart(2, '0') + ":" +
             String(seconds).padStart(2, '0');
-
     }, 1000);
 }
 
@@ -766,7 +760,6 @@ document.addEventListener("leavepictureinpicture", () => {
 /* ==================================================== */
 
 function endCall() {
-
     const confirmEnd = confirm("Are you sure you want to leave the meeting?");
     if (!confirmEnd) return;
 
@@ -778,22 +771,14 @@ function endCall() {
 
     hidePresentingState();
 
+    if (meetingTimerInterval) {
+        clearInterval(meetingTimerInterval);
+    }
+
     localStream.getTracks().forEach(track => track.stop());
     Object.values(peers).forEach(peer => peer.close());
 
     window.location.href = "/";
-}
-
-function addUserToChatList(userId, name) {
-
-    const select = document.getElementById("chat-target");
-    if (!select) return;
-
-    const option = document.createElement("option");
-    option.value = userId;
-    option.text = "Private: " + name;
-
-    select.appendChild(option);
 }
 
 init();
