@@ -18,6 +18,11 @@ let groupMessages = [];
 let privateChats = {};
 let activeChatTab = "group";
 
+/* ================= PRIVATE CHAT UNREAD VARIABLES ================= */
+let privateUnreadCounts = {};
+let selectedPrivateUser = null;
+/* ================================================================= */
+
 /* ================= CUSTOM MIRRORED PIP VARIABLES ================= */
 let pipCanvas = null;
 let pipContext = null;
@@ -74,6 +79,19 @@ async function init() {
                 sendMessage();
             }
         });
+
+    const chatTarget = document.getElementById("chat-target");
+    if (chatTarget) {
+        chatTarget.addEventListener("change", function () {
+            selectedPrivateUser = this.value || null;
+
+            if (activeChatTab === "private" && selectedPrivateUser) {
+                clearPrivateUnread(selectedPrivateUser);
+            }
+
+            renderChatMessages();
+        });
+    }
 
     socket.on("room-start-time", (startTime) => {
         meetingStartTime = startTime;
@@ -146,6 +164,16 @@ async function init() {
             isPrivate: true
         });
 
+        const isCurrentlyViewingThisPrivateChat =
+            activeChatTab === "private" && selectedPrivateUser === senderId;
+
+        if (!isCurrentlyViewingThisPrivateChat) {
+            privateUnreadCounts[senderId] = (privateUnreadCounts[senderId] || 0) + 1;
+        }
+
+        updatePrivateChatOptionText(senderId);
+        updatePrivateTabText();
+
         if (activeChatTab === "private") {
             renderChatMessages();
         }
@@ -210,8 +238,14 @@ async function init() {
         delete localCameraStates[userId];
         delete localScreenShareStates[userId];
         delete privateChats[userId];
+        delete privateUnreadCounts[userId];
+
+        if (selectedPrivateUser === userId) {
+            selectedPrivateUser = null;
+        }
 
         removeUserFromChatList(userId);
+        updatePrivateTabText();
         updateParticipantCount();
 
         if (focusedId === userId) {
@@ -221,6 +255,7 @@ async function init() {
         renderChatMessages();
     });
 
+    updatePrivateTabText();
     startMeetingTimer();
 }
 
@@ -374,6 +409,7 @@ function switchChatTab(tab) {
     const privateBtn = document.getElementById("private-tab-btn");
     const privateControls = document.getElementById("private-chat-controls");
     const subtitle = document.getElementById("chat-subtitle");
+    const target = document.getElementById("chat-target");
 
     if (tab === "group") {
         groupBtn.classList.add("active");
@@ -385,11 +421,17 @@ function switchChatTab(tab) {
         groupBtn.classList.remove("active");
         privateControls.classList.remove("hidden-mode");
 
-        const target = document.getElementById("chat-target");
-        const selectedText = target.options[target.selectedIndex]?.text || "Select a person";
+        selectedPrivateUser = target ? (target.value || null) : null;
+
+        if (selectedPrivateUser) {
+            clearPrivateUnread(selectedPrivateUser);
+        }
+
+        const selectedText = target?.options[target.selectedIndex]?.text || "Select a person";
         subtitle.innerText = selectedText;
     }
 
+    updatePrivateTabText();
     renderChatMessages();
 }
 
@@ -409,12 +451,15 @@ function renderChatMessages() {
         });
     } else {
         const targetId = document.getElementById("chat-target").value;
+        selectedPrivateUser = targetId || null;
 
         if (!targetId) {
             subtitle.innerText = "Select a person";
             messages.innerHTML = `<div class="chat-bubble">No private chat selected.</div>`;
             return;
         }
+
+        clearPrivateUnread(targetId);
 
         const targetName = userNames[targetId] || "Private Chat";
         subtitle.innerText = "Private: " + targetName;
@@ -447,6 +492,8 @@ function sendMessage() {
             return;
         }
 
+        selectedPrivateUser = targetId;
+
         socket.emit("private-message", {
             targetId: targetId,
             message: message
@@ -478,6 +525,9 @@ function addUserToChatList(userId, name) {
     option.value = userId;
     option.text = "Private: " + name;
     select.appendChild(option);
+
+    updatePrivateChatOptionText(userId);
+    updatePrivateTabText();
 }
 
 function removeUserFromChatList(userId) {
@@ -487,6 +537,45 @@ function removeUserFromChatList(userId) {
     const option = select.querySelector(`option[value="${userId}"]`);
     if (option) option.remove();
 }
+
+/* ================= PRIVATE CHAT UNREAD HELPERS ================= */
+
+function getTotalPrivateUnreadCount() {
+    return Object.values(privateUnreadCounts).reduce((sum, count) => sum + count, 0);
+}
+
+function updatePrivateTabText() {
+    const privateBtn = document.getElementById("private-tab-btn");
+    if (!privateBtn) return;
+
+    const totalUnread = getTotalPrivateUnreadCount();
+    privateBtn.innerText = totalUnread > 0 ? `Private (${totalUnread})` : "Private";
+}
+
+function updatePrivateChatOptionText(userId) {
+    const select = document.getElementById("chat-target");
+    if (!select) return;
+
+    const option = select.querySelector(`option[value="${userId}"]`);
+    if (!option) return;
+
+    const name = userNames[userId] || "Unknown";
+    const unread = privateUnreadCounts[userId] || 0;
+
+    option.text = unread > 0
+        ? `Private: ${name} (${unread})`
+        : `Private: ${name}`;
+}
+
+function clearPrivateUnread(userId) {
+    if (!userId) return;
+
+    privateUnreadCounts[userId] = 0;
+    updatePrivateChatOptionText(userId);
+    updatePrivateTabText();
+}
+
+/* ============================================================= */
 
 /* ================= MEDIA CONTROLS ================= */
 

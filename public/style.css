@@ -361,6 +361,13 @@ body {
     border-left: none;
 }
 
+.chat-header {
+    padding: 12px 10px 8px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #333;
+}
+
 .messages {
     flex: 1;
     padding: 10px;
@@ -393,6 +400,7 @@ body {
     border: none;
     background: #2a2a2a;
     color: white;
+    outline: none;
 }
 
 .chat-input button {
@@ -401,6 +409,10 @@ body {
     background: #6200ea;
     color: white;
     cursor: pointer;
+}
+
+.chat-input button:hover {
+    background: #7c4dff;
 }
 
 /* ================= CONTROLS ================= */
@@ -531,6 +543,7 @@ body {
     border: none;
     border-radius: 6px;
     font-size: 13px;
+    outline: none;
 }
 
 /* ================= CHAT TABS ================= */
@@ -550,6 +563,11 @@ body {
     background: #2a2a2a;
     color: white;
     cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.chat-tab:hover {
+    background: #3a3a3a;
 }
 
 .chat-tab.active {
@@ -560,6 +578,7 @@ body {
     font-size: 12px;
     color: #aaa;
     padding: 8px 10px 0;
+    min-height: 24px;
 }
 
 .hidden-mode {
