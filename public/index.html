@@ -8,102 +8,144 @@
 </head>
 <body class="join-body">
 
-    <!-- Top Navigation -->
-    <header class="landing-header">
-        <div class="landing-brand">
-            <img src="images/logo.png" alt="Connectify Logo" class="landing-logo">
-            <span class="landing-brand-text">Connectify</span>
-        </div>
+<header class="landing-header">
+    <div class="landing-brand">
+        <img src="images/logo.png" alt="Connectify Logo" class="landing-logo">
+        <span class="landing-brand-text">Connectify</span>
+    </div>
 
-        <div class="landing-nav">
-            <button class="nav-btn" onclick="scrollToHome()">Home</button>
-            <button class="nav-btn" onclick="scrollToDevelopers()">Contact</button>
-        </div>
+    <div class="landing-nav">
+        <button class="nav-btn" onclick="scrollToHome()">Home</button>
+        <button class="nav-btn" onclick="scrollToDevelopers()">Contact</button>
+    </div>
+</header>
 
-    </header>
+<section class="hero-section">
+    <div class="hero-overlay"></div>
 
-    <!-- Hero / Join Section -->
-    <section class="hero-section">
-        <div class="hero-overlay"></div>
-
-        <div class="join-container professional-card">
-            <div class="brand">
-                <img src="images/logo.png" alt="Connectify Logo" class="brand-logo">
-                <div class="brand-text-wrap">
-                    <h1 class="logo-text">Connectify</h1>
-                    <p class="tagline">Seamless Real-Time Communication</p>
-                </div>
-            </div>
-
-            <input type="text" id="username" placeholder="Enter Your Name">
-            <input type="text" id="room-id" placeholder="Enter Room ID">
-            <button onclick="joinRoom()">Join Room</button>
-        </div>
-
-        <div class="scroll-indicator" onclick="scrollToDevelopers()">
-            <span>Scroll to explore</span>
-            <div class="scroll-arrow">⌄</div>
-        </div>
-    </section>
-
-    <!-- Developers Section -->
-    <section id="developers-section" class="developers-section">
-        <div class="developers-wrapper">
-            <h2 class="developers-heading">Meet the Developers</h2>
-            <p class="developers-subtitle">Built with passion for modern real-time communication.</p>
-
-            <div class="developers-grid">
-                <div class="developer-card">
-                    <img src="images/dev/renu.jpeg" alt="Renujan" class="developer-photo">
-                    <h3 class="developer-name">Renujan J.</h3>
-                    <p class="developer-id">2022/E/065</p>
-                    <a href="https://www.linkedin.com/in/jeyakumarrenujan03" target="_blank" class="developer-link">LinkedIn</a>
-                </div>
-
-                <div class="developer-card">
-                    <img src="images/dev/kil.jpeg" alt="Kilshan" class="developer-photo">
-                    <h3 class="developer-name">Kilshan P.</h3>
-                    <p class="developer-id">2022/E/109</p>
-                    <a href="https://www.linkedin.com/in/kil-shan-9b76513b7" target="_blank" class="developer-link">LinkedIn</a>
-                </div>
-
-                <div class="developer-card">
-                    <img src="images/dev/vasu.jpeg" alt="Vasunthar" class="developer-photo">
-                    <h3 class="developer-name">Vasunthar S.</h3>
-                    <p class="developer-id">2022/E/139</p>
-                    <a href="https://www.linkedin.com/in/vasunthar-selvanayagam-227081294?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="developer-link">LinkedIn</a>
-                </div>
+    <div class="join-container professional-card">
+        <div class="brand">
+            <img src="images/logo.png" alt="Connectify Logo" class="brand-logo">
+            <div class="brand-text-wrap">
+                <h1 class="logo-text">Connectify</h1>
+                <p class="tagline">Seamless Real-Time Communication</p>
             </div>
         </div>
-    </section>
 
-    <script>
-        function joinRoom() {
-            const username = document.getElementById("username").value.trim();
-            const roomId = document.getElementById("room-id").value.trim();
+        <input type="text" id="username" placeholder="Enter Your Name">
+        <input type="text" id="room-id" placeholder="Enter Room ID">
+        <button onclick="joinRoom()">Join Room</button>
+    </div>
 
-            if (!username || !roomId) {
-                alert("Please enter your name and room ID");
-                return;
-            }
+    <div class="scroll-indicator" onclick="scrollToDevelopers()">
+        <span>Scroll to explore</span>
+        <div class="scroll-arrow">⌄</div>
+    </div>
+</section>
 
-            localStorage.setItem("username", username);
-            window.location.href = `/meeting.html?room=${roomId}`;
+<section id="developers-section" class="developers-section">
+    <div class="developers-wrapper">
+
+        <h2 class="developers-heading">Meet the Developers</h2>
+        <p class="developers-subtitle">Built with passion for modern real-time communication.</p>
+
+        <div class="developers-grid">
+
+            <div class="developer-card">
+                <img src="images/dev/renu.jpeg" alt="Renujan" class="developer-photo">
+                <h3 class="developer-name">Renujan J.</h3>
+                <p class="developer-id">2022/E/065</p>
+
+                <a href="https://www.linkedin.com/in/jeyakumarrenujan03" target="_blank" class="linkedin-icon-btn">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path fill="white" d="M100.28 448H7.4V148.9h92.88zm-46.44-340C24.09 
+                        108 0 83.91 0 53.8A53.8 53.8 0 0 1 53.84 0c29.9 
+                        0 53.8 24.09 53.8 53.8 0 30.11-23.9 
+                        54.2-53.8 54.2zM447.9 448h-92.4V302.4c0-34.7-.7-79.3-48.3-79.3-48.3 
+                        0-55.7 37.7-55.7 76.7V448h-92.4V148.9h88.7v40.8h1.3c12.4-23.5 
+                        42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 
+                        142.3V448z"/>
+                    </svg>
+
+                </a>
+            </div>
+
+            <div class="developer-card">
+                <img src="images/dev/kil.jpeg" alt="Kilshan" class="developer-photo">
+                <h3 class="developer-name">Kilshan P.</h3>
+                <p class="developer-id">2022/E/109</p>
+
+                <a href="https://www.linkedin.com/in/kil-shan-9b76513b7" target="_blank" class="linkedin-icon-btn">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path fill="white" d="M100.28 448H7.4V148.9h92.88zm-46.44-340C24.09 
+                        108 0 83.91 0 53.8A53.8 53.8 0 0 1 53.84 0c29.9 
+                        0 53.8 24.09 53.8 53.8 0 30.11-23.9 
+                        54.2-53.8 54.2zM447.9 448h-92.4V302.4c0-34.7-.7-79.3-48.3-79.3-48.3 
+                        0-55.7 37.7-55.7 76.7V448h-92.4V148.9h88.7v40.8h1.3c12.4-23.5 
+                        42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 
+                        142.3V448z"/>
+                    </svg>
+
+                </a>
+            </div>
+
+            <div class="developer-card">
+                <img src="images/dev/vasu.jpeg" alt="Vasunthar" class="developer-photo">
+                <h3 class="developer-name">Vasunthar S.</h3>
+                <p class="developer-id">2022/E/139</p>
+
+                <a href="https://www.linkedin.com/in/vasunthar-selvanayagam-227081294?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="linkedin-icon-btn">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path fill="white" d="M100.28 448H7.4V148.9h92.88zm-46.44-340C24.09 
+                        108 0 83.91 0 53.8A53.8 53.8 0 0 1 53.84 0c29.9 
+                        0 53.8 24.09 53.8 53.8 0 30.11-23.9 
+                        54.2-53.8 54.2zM447.9 448h-92.4V302.4c0-34.7-.7-79.3-48.3-79.3-48.3 
+                        0-55.7 37.7-55.7 76.7V448h-92.4V148.9h88.7v40.8h1.3c12.4-23.5 
+                        42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 
+                        142.3V448z"/>
+                    </svg>
+
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    function joinRoom() {
+
+        const username = document.getElementById("username").value.trim();
+        const roomId = document.getElementById("room-id").value.trim();
+
+        if (!username || !roomId) {
+            alert("Please enter your name and room ID");
+            return;
         }
 
-        function scrollToHome(){
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
+        localStorage.setItem("username", username);
 
-        function scrollToDevelopers() {
-            document.getElementById("developers-section").scrollIntoView({
-                behavior: "smooth"
-            });
-        }
-    </script>
+        window.location.href = `/meeting.html?room=${roomId}`;
+    }
+
+    function scrollToHome(){
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    function scrollToDevelopers() {
+
+        document.getElementById("developers-section").scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+</script>
 
 </body>
 </html>

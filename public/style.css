@@ -996,3 +996,33 @@ body {
         min-width: 86px;
     }
 }
+
+.linkedin-icon-btn{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    background:#0077b5;
+
+    transition:0.25s;
+
+    margin-top:10px;
+}
+
+.linkedin-icon-btn:hover{
+
+    background:#005582;
+    transform:scale(1.1);
+}
+
+.linkedin-icon-btn svg{
+
+    width:18px;
+    height:18px;
+}
