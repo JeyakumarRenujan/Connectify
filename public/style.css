@@ -95,11 +95,11 @@ body {
     background: #7c4dff;
 }
 
-/* ================= TEAM FOOTER ================= */
+/* ================= TEAM FOOTER (SMALLER VERSION) ================= */
 
 .team-footer-wrapper {
     width: 100%;
-    max-width: 900px;
+    max-width: 700px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -107,9 +107,9 @@ body {
 }
 
 .team-title {
-    font-size: 18px;
-    color: #ddd;
-    margin-bottom: 18px;
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 14px;
     letter-spacing: 1px;
 }
 
@@ -118,64 +118,62 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 70px;
+    gap: 40px;
     flex-wrap: wrap;
     border-top: 1px solid #333;
-    padding-top: 28px;
+    padding-top: 18px;
 }
 
 .team-member-card {
-    min-width: 180px;
+    min-width: 140px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
 }
 
+/* Smaller profile photos */
+
 .team-photo {
-    width: 74px;
-    height: 74px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #7c4dff;
-    background: #2a2a2a;
     padding: 2px;
+    background: #2a2a2a;
 }
+
+/* Smaller name */
 
 .team-name {
-    display: block;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
     color: #ddd;
-    line-height: 1.4;
+    line-height: 1.3;
 }
 
-.team-role {
-    font-size: 12px;
-    color: #888;
-}
+/* Smaller LinkedIn icon */
 
 .linkedin-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: #2a2a2a;
     transition: 0.2s ease;
-    text-decoration: none;
 }
 
 .linkedin-link:hover {
     background: #7c4dff;
-    transform: translateY(-2px);
 }
 
 .linkedin-icon {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     fill: white;
 }
 
