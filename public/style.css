@@ -97,22 +97,36 @@ body {
 
 /* ================= TEAM FOOTER ================= */
 
-.team-footer {
+.team-footer-wrapper {
     width: 100%;
     max-width: 900px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.team-title {
+    font-size: 18px;
+    color: #ddd;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+}
+
+.team-footer {
+    width: 100%;
+    display: flex;
     justify-content: center;
-    align-items: stretch;
-    gap: 25px;
+    align-items: flex-start;
+    gap: 70px;
     flex-wrap: wrap;
     border-top: 1px solid #333;
-    padding-top: 20px;
+    padding-top: 28px;
 }
 
 .team-member-card {
     min-width: 180px;
     text-align: center;
-    padding: 10px 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -120,8 +134,8 @@ body {
 }
 
 .team-photo {
-    width: 62px;
-    height: 62px;
+    width: 74px;
+    height: 74px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #7c4dff;
@@ -134,6 +148,12 @@ body {
     font-size: 15px;
     font-weight: 600;
     color: #ddd;
+    line-height: 1.4;
+}
+
+.team-role {
+    font-size: 12px;
+    color: #888;
 }
 
 .linkedin-link {
@@ -445,7 +465,7 @@ body {
 
     .team-footer {
         flex-direction: column;
-        gap: 8px;
+        gap: 18px;
     }
 }
 
@@ -514,21 +534,4 @@ body {
     border: none;
     border-radius: 6px;
     font-size: 13px;
-}
-
-.team-footer-wrapper{
-    width:100%;
-    text-align:center;
-}
-
-.team-title{
-    font-size:18px;
-    color:#aaa;
-    margin-bottom:15px;
-    letter-spacing:1px;
-}
-
-.team-role{
-    font-size:12px;
-    color:#888;
 }
