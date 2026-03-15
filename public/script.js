@@ -604,7 +604,9 @@ function toggleMute() {
 
     const btn = document.getElementById("mute-btn");
     if (btn) {
-        btn.innerText = isMuted ? "🔇" : "🎤";
+        btn.innerHTML = isMuted
+            ? '<i class="fa-solid fa-microphone-slash"></i>'
+            : '<i class="fa-solid fa-microphone"></i>';
     }
 
     socket.emit("mute-status", isMuted);
@@ -638,7 +640,9 @@ function toggleVideo() {
 
     const btn = document.getElementById("camera-btn");
     if (btn) {
-        btn.innerText = isOn ? "📷" : "🚫📷";
+        btn.innerHTML = isOn
+            ? '<i class="fa-solid fa-video"></i>'
+            : '<i class="fa-solid fa-video-slash"></i>';
     }
 
     socket.emit("camera-status", isOn);
@@ -685,7 +689,7 @@ async function startScreenShare() {
         isScreenSharing = true;
 
         const btn = document.getElementById("screen-share-btn");
-        if (btn) btn.innerText = "⛔";
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-display"></i>';
 
         screenTrack.onended = async () => {
             if (isScreenSharing) {
@@ -734,7 +738,7 @@ async function stopScreenShare() {
         isScreenSharing = false;
 
         const btn = document.getElementById("screen-share-btn");
-        if (btn) btn.innerText = "🖥️";
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-desktop"></i>';
     } catch (error) {
         console.error("Stop screen share error:", error);
     }
@@ -789,8 +793,6 @@ function hidePresentingState() {
     }
 }
 
-/* =============================================== */
-
 function toggleChat() {
     const chat = document.getElementById("chat-panel");
     chat.classList.toggle("hidden");
@@ -803,8 +805,6 @@ function updateParticipantCount() {
         counter.innerText = "Participants: " + participantCount;
     }
 }
-
-/* ================= MEETING TIMER ================= */
 
 function startMeetingTimer() {
     const timerElement = document.getElementById("meeting-timer");
@@ -824,8 +824,6 @@ function startMeetingTimer() {
             String(seconds).padStart(2, '0');
     }, 1000);
 }
-
-/* ================= CUSTOM MIRRORED PIP ================= */
 
 async function startMirroredPiP() {
     const localVideo = document.getElementById("local");
@@ -943,8 +941,6 @@ document.addEventListener("leavepictureinpicture", () => {
         pipStream = null;
     }
 });
-
-/* ==================================================== */
 
 function endCall() {
     const confirmEnd = confirm("Are you sure you want to leave the meeting?");

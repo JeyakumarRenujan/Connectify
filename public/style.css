@@ -133,8 +133,6 @@ body {
     gap: 5px;
 }
 
-/* Smaller photo */
-
 .team-photo {
     width: 46px;
     height: 46px;
@@ -144,16 +142,12 @@ body {
     background: #2a2a2a;
 }
 
-/* Smaller name */
-
 .team-name {
     font-size: 12px;
     font-weight: 600;
     color: #ddd;
     line-height: 1.3;
 }
-
-/* Smaller LinkedIn button */
 
 .linkedin-link {
     display: inline-flex;
@@ -184,8 +178,6 @@ body {
     height: 100vh;
 }
 
-/* Top Bar */
-
 .top-bar {
     background: #1a1a1a;
     padding: 10px 20px;
@@ -199,8 +191,6 @@ body {
     align-items: center;
     gap: 15px;
 }
-
-/* Meeting Header Brand */
 
 .brand-header {
     display: flex;
@@ -234,16 +224,12 @@ body {
     color: #ccc;
 }
 
-/* ================= MAIN LAYOUT ================= */
-
 .main-container {
     flex: 1;
     display: flex;
     overflow: hidden;
     min-height: 0;
 }
-
-/* ================= VIDEO GRID ================= */
 
 .video-grid {
     flex: 1;
@@ -361,6 +347,13 @@ body {
     border-left: none;
 }
 
+.chat-header {
+    padding: 12px 12px 10px;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid #333;
+}
+
 .messages {
     flex: 1;
     padding: 10px;
@@ -393,6 +386,7 @@ body {
     border: none;
     background: #2a2a2a;
     color: white;
+    outline: none;
 }
 
 .chat-input button {
@@ -403,32 +397,66 @@ body {
     cursor: pointer;
 }
 
+.chat-input button:hover {
+    background: #7c4dff;
+}
+
 /* ================= CONTROLS ================= */
 
 .controls {
-    background: #1a1a1a;
-    padding: 12px;
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 14px 18px;
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
 }
 
 .control-btn {
-    background: #2a2a2a;
+    background: #2b2b2b;
     color: white;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: none;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .control-btn:hover {
-    background: #444;
+    background: #3a3a3a;
     transform: translateY(-1px);
 }
 
-.end-call {
-    background: red;
+.icon-btn {
+    width: 58px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.end-call-btn {
+    background: #ff2d2d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 96px;
+    height: 46px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+}
+
+.end-call-btn:hover {
+    background: #e12626;
+}
+
+.end-call-btn i {
+    font-size: 16px;
 }
 
 /* ================= MOBILE ================= */
@@ -463,6 +491,21 @@ body {
     .team-footer {
         flex-direction: column;
         gap: 18px;
+    }
+
+    .controls {
+        gap: 10px;
+        padding: 12px 10px;
+        flex-wrap: wrap;
+    }
+
+    .icon-btn {
+        width: 50px;
+        height: 44px;
+    }
+
+    .end-call-btn {
+        min-width: 86px;
     }
 }
 
@@ -531,6 +574,7 @@ body {
     border: none;
     border-radius: 6px;
     font-size: 13px;
+    outline: none;
 }
 
 /* ================= CHAT TABS ================= */
@@ -550,6 +594,11 @@ body {
     background: #2a2a2a;
     color: white;
     cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.chat-tab:hover {
+    background: #3a3a3a;
 }
 
 .chat-tab.active {
@@ -560,6 +609,7 @@ body {
     font-size: 12px;
     color: #aaa;
     padding: 8px 10px 0;
+    min-height: 24px;
 }
 
 .hidden-mode {

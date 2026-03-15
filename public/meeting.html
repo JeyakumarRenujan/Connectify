@@ -4,6 +4,7 @@
     <title>Connectify Meeting</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body class="meeting-body">
@@ -61,12 +62,30 @@
 </div>
 
 <div class="controls">
-    <button id="mute-btn" class="control-btn" onclick="toggleMute()">🎤</button>
-    <button id="camera-btn" class="control-btn" onclick="toggleVideo()">📷</button>
-    <button class="control-btn" id="screen-share-btn" onclick="toggleScreenShare()">🖥️</button>
-    <button class="control-btn" onclick="toggleChat()">💬</button>
-    <button class="control-btn" onclick="toggleMirroredPiP()">🪟</button>
-    <button class="control-btn end-call" onclick="endCall()">🔴 End</button>
+    <button id="mute-btn" class="control-btn icon-btn" onclick="toggleMute()" title="Mute / Unmute">
+        <i class="fa-solid fa-microphone"></i>
+    </button>
+
+    <button id="camera-btn" class="control-btn icon-btn" onclick="toggleVideo()" title="Camera On / Off">
+        <i class="fa-solid fa-video"></i>
+    </button>
+
+    <button class="control-btn icon-btn" id="screen-share-btn" onclick="toggleScreenShare()" title="Share Screen">
+        <i class="fa-solid fa-desktop"></i>
+    </button>
+
+    <button class="control-btn icon-btn" onclick="toggleChat()" title="Open Chat">
+        <i class="fa-solid fa-comments"></i>
+    </button>
+
+    <button class="control-btn icon-btn" onclick="toggleMirroredPiP()" title="Picture in Picture">
+        <i class="fa-solid fa-window-restore"></i>
+    </button>
+
+    <button class="control-btn end-call end-call-btn" onclick="endCall()" title="End Call">
+        <i class="fa-solid fa-phone-slash"></i>
+        <span>End</span>
+    </button>
 </div>
 
 <div id="toast-container" class="toast-container"></div>
