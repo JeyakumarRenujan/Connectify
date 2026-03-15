@@ -140,7 +140,6 @@ body {
     height: 52px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #7c4dff;
     padding: 2px;
     background: #2a2a2a;
 }
