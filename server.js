@@ -10,7 +10,8 @@ app.use(express.static("public"));
 
 let users = {};
 let muteStates = {};
-let cameraStates = {};   // 🔥 NEW
+let cameraStates = {};
+let screenShareStates = {};   // 🔥 NEW
 
 io.on("connection", (socket) => {
 
@@ -25,7 +26,8 @@ io.on("connection", (socket) => {
 
         // Default states
         muteStates[socket.id] = false;
-        cameraStates[socket.id] = true;  // default camera ON
+        cameraStates[socket.id] = true;       // default camera ON
+        screenShareStates[socket.id] = false; // default not sharing
 
         console.log(`${username} joined room ${roomId}`);
 
@@ -43,6 +45,13 @@ io.on("connection", (socket) => {
         Object.keys(cameraStates).forEach((id) => {
             if (id !== socket.id) {
                 io.to(socket.id).emit("camera-status", id, cameraStates[id]);
+            }
+        });
+
+        // 🔥 SEND EXISTING SCREEN SHARE STATES
+        Object.keys(screenShareStates).forEach((id) => {
+            if (id !== socket.id) {
+                io.to(socket.id).emit("screen-share-status", id, screenShareStates[id]);
             }
         });
 
@@ -113,6 +122,22 @@ io.on("connection", (socket) => {
             );
         });
 
+        // ================= SCREEN SHARE =================
+
+        socket.on("screen-share-status", (isSharing) => {
+
+            const user = users[socket.id];
+            if (!user) return;
+
+            screenShareStates[socket.id] = isSharing;
+
+            socket.to(user.roomId).emit(
+                "screen-share-status",
+                socket.id,
+                isSharing
+            );
+        });
+
         // ================= DISCONNECT =================
 
         socket.on("disconnect", () => {
@@ -125,10 +150,10 @@ io.on("connection", (socket) => {
             delete users[socket.id];
             delete muteStates[socket.id];
             delete cameraStates[socket.id];
+            delete screenShareStates[socket.id];
         });
     });
 });
-
 
 const PORT = process.env.PORT || 3000;
 

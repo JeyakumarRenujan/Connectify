@@ -11,6 +11,7 @@ let participantCount = 1;
 let userNames = {};
 let localMuteStates = {};
 let localCameraStates = {};
+let localScreenShareStates = {};
 let focusedId = null;   // 🔥 focus state
 
 /* ================= CUSTOM MIRRORED PIP VARIABLES ================= */
@@ -140,6 +141,19 @@ async function init() {
         }
     });
 
+    socket.on("screen-share-status", (userId, isSharing) => {
+        localScreenShareStates[userId] = isSharing;
+
+        const video = document.getElementById(userId);
+        if (!video) return;
+
+        if (isSharing) {
+            video.classList.add("screen-share-video");
+        } else {
+            video.classList.remove("screen-share-video");
+        }
+    });
+
     socket.on("user-disconnected", (userId) => {
 
         if (peers[userId]) {
@@ -153,6 +167,7 @@ async function init() {
         delete userNames[userId];
         delete localMuteStates[userId];
         delete localCameraStates[userId];
+        delete localScreenShareStates[userId];
 
         updateParticipantCount();
 
@@ -217,6 +232,11 @@ function addVideoStream(stream, id, name) {
     // 🔥 FIX: Mute only local video
     if (id === "local") {
         video.muted = true;
+    }
+
+    // Apply screen share class if this user is currently sharing
+    if (localScreenShareStates[id]) {
+        video.classList.add("screen-share-video");
     }
 
     const label = document.createElement("div");
@@ -423,8 +443,11 @@ async function startScreenShare() {
         const localVideo = document.getElementById("local");
         if (localVideo) {
             localVideo.srcObject = localStream;
-            localVideo.style.transform = "none";
+            localVideo.classList.add("screen-share-video");
         }
+
+        localScreenShareStates["local"] = true;
+        socket.emit("screen-share-status", true);
 
         showPresentingState();
 
@@ -461,8 +484,11 @@ async function stopScreenShare() {
         const localVideo = document.getElementById("local");
         if (localVideo) {
             localVideo.srcObject = localStream;
-            localVideo.style.transform = "scaleX(-1)";
+            localVideo.classList.remove("screen-share-video");
         }
+
+        localScreenShareStates["local"] = false;
+        socket.emit("screen-share-status", false);
 
         hidePresentingState();
 

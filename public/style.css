@@ -373,9 +373,14 @@ body {
     transform: scaleX(-1);
 }
 
-/* Mirror ALL videos (local + remote) */
+/* Mirror ALL camera videos */
 .video-container video {
     transform: scaleX(-1);
+}
+
+/* 🚀 DO NOT mirror screen share */
+.video-container video.screen-share-video {
+    transform: none !important;
 }
 
 .presenting-badge {
