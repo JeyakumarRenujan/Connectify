@@ -361,13 +361,6 @@ body {
     border-left: none;
 }
 
-.chat-header {
-    padding: 12px 10px 8px;
-    font-size: 16px;
-    font-weight: 600;
-    border-bottom: 1px solid #333;
-}
-
 .messages {
     flex: 1;
     padding: 10px;
@@ -400,7 +393,6 @@ body {
     border: none;
     background: #2a2a2a;
     color: white;
-    outline: none;
 }
 
 .chat-input button {
@@ -409,10 +401,6 @@ body {
     background: #6200ea;
     color: white;
     cursor: pointer;
-}
-
-.chat-input button:hover {
-    background: #7c4dff;
 }
 
 /* ================= CONTROLS ================= */
@@ -543,7 +531,6 @@ body {
     border: none;
     border-radius: 6px;
     font-size: 13px;
-    outline: none;
 }
 
 /* ================= CHAT TABS ================= */
@@ -563,11 +550,6 @@ body {
     background: #2a2a2a;
     color: white;
     cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.chat-tab:hover {
-    background: #3a3a3a;
 }
 
 .chat-tab.active {
@@ -578,9 +560,83 @@ body {
     font-size: 12px;
     color: #aaa;
     padding: 8px 10px 0;
-    min-height: 24px;
 }
 
 .hidden-mode {
     display: none;
+}
+
+/* ================= PRIVATE NOTIFICATION ================= */
+
+.private-tab-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.notification-badge {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #ff3b30;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.hidden-badge {
+    display: none !important;
+}
+
+.toast-container {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.private-toast {
+    min-width: 240px;
+    max-width: 320px;
+    background: #1f1f1f;
+    color: white;
+    border-left: 4px solid #7c4dff;
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    animation: slideInToast 0.25s ease;
+}
+
+.private-toast-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #7c4dff;
+    margin-bottom: 4px;
+}
+
+.private-toast-message {
+    font-size: 12px;
+    color: #ddd;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+@keyframes slideInToast {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

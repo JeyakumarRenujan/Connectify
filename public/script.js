@@ -17,11 +17,8 @@ let focusedId = null;
 let groupMessages = [];
 let privateChats = {};
 let activeChatTab = "group";
-
-/* ================= PRIVATE CHAT UNREAD VARIABLES ================= */
 let privateUnreadCounts = {};
 let selectedPrivateUser = null;
-/* ================================================================= */
 
 /* ================= CUSTOM MIRRORED PIP VARIABLES ================= */
 let pipCanvas = null;
@@ -80,9 +77,8 @@ async function init() {
             }
         });
 
-    const chatTarget = document.getElementById("chat-target");
-    if (chatTarget) {
-        chatTarget.addEventListener("change", function () {
+    document.getElementById("chat-target")
+        .addEventListener("change", function () {
             selectedPrivateUser = this.value || null;
 
             if (activeChatTab === "private" && selectedPrivateUser) {
@@ -91,7 +87,6 @@ async function init() {
 
             renderChatMessages();
         });
-    }
 
     socket.on("room-start-time", (startTime) => {
         meetingStartTime = startTime;
@@ -164,15 +159,20 @@ async function init() {
             isPrivate: true
         });
 
-        const isCurrentlyViewingThisPrivateChat =
-            activeChatTab === "private" && selectedPrivateUser === senderId;
+        const target = document.getElementById("chat-target");
+        const currentSelectedUser = target ? target.value : null;
 
-        if (!isCurrentlyViewingThisPrivateChat) {
+        const isViewingThisChat =
+            activeChatTab === "private" && currentSelectedUser === senderId;
+
+        if (!isViewingThisChat) {
             privateUnreadCounts[senderId] = (privateUnreadCounts[senderId] || 0) + 1;
+            updatePrivateOptionLabel(senderId);
+            updatePrivateNotificationBadge();
+            showPrivateToast(senderName, message);
+        } else {
+            clearPrivateUnread(senderId);
         }
-
-        updatePrivateChatOptionText(senderId);
-        updatePrivateTabText();
 
         if (activeChatTab === "private") {
             renderChatMessages();
@@ -240,12 +240,8 @@ async function init() {
         delete privateChats[userId];
         delete privateUnreadCounts[userId];
 
-        if (selectedPrivateUser === userId) {
-            selectedPrivateUser = null;
-        }
-
         removeUserFromChatList(userId);
-        updatePrivateTabText();
+        updatePrivateNotificationBadge();
         updateParticipantCount();
 
         if (focusedId === userId) {
@@ -255,7 +251,7 @@ async function init() {
         renderChatMessages();
     });
 
-    updatePrivateTabText();
+    updatePrivateNotificationBadge();
     startMeetingTimer();
 }
 
@@ -400,6 +396,63 @@ function removeFocusMode() {
     });
 }
 
+function updatePrivateNotificationBadge() {
+    const badge = document.getElementById("private-notification-badge");
+    if (!badge) return;
+
+    const totalUnread = Object.values(privateUnreadCounts).reduce((sum, count) => sum + count, 0);
+
+    if (totalUnread > 0) {
+        badge.textContent = totalUnread;
+        badge.classList.remove("hidden-badge");
+    } else {
+        badge.textContent = "0";
+        badge.classList.add("hidden-badge");
+    }
+}
+
+function updatePrivateOptionLabel(userId) {
+    const select = document.getElementById("chat-target");
+    if (!select) return;
+
+    const option = select.querySelector(`option[value="${userId}"]`);
+    if (!option) return;
+
+    const unread = privateUnreadCounts[userId] || 0;
+    const name = userNames[userId] || "Unknown";
+
+    option.text = unread > 0
+        ? `🔔 Private: ${name} (${unread})`
+        : `Private: ${name}`;
+}
+
+function clearPrivateUnread(userId) {
+    if (!userId) return;
+
+    privateUnreadCounts[userId] = 0;
+    updatePrivateOptionLabel(userId);
+    updatePrivateNotificationBadge();
+}
+
+function showPrivateToast(senderName, message) {
+    const toastContainer = document.getElementById("toast-container");
+    if (!toastContainer) return;
+
+    const toast = document.createElement("div");
+    toast.className = "private-toast";
+
+    toast.innerHTML = `
+        <div class="private-toast-title">New private message from ${senderName}</div>
+        <div class="private-toast-message">${message}</div>
+    `;
+
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
 /* ================= CHAT ================= */
 
 function switchChatTab(tab) {
@@ -421,17 +474,16 @@ function switchChatTab(tab) {
         groupBtn.classList.remove("active");
         privateControls.classList.remove("hidden-mode");
 
-        selectedPrivateUser = target ? (target.value || null) : null;
+        selectedPrivateUser = target.value || null;
 
         if (selectedPrivateUser) {
             clearPrivateUnread(selectedPrivateUser);
         }
 
-        const selectedText = target?.options[target.selectedIndex]?.text || "Select a person";
+        const selectedText = target.options[target.selectedIndex]?.text || "Select a person";
         subtitle.innerText = selectedText;
     }
 
-    updatePrivateTabText();
     renderChatMessages();
 }
 
@@ -492,8 +544,6 @@ function sendMessage() {
             return;
         }
 
-        selectedPrivateUser = targetId;
-
         socket.emit("private-message", {
             targetId: targetId,
             message: message
@@ -526,8 +576,7 @@ function addUserToChatList(userId, name) {
     option.text = "Private: " + name;
     select.appendChild(option);
 
-    updatePrivateChatOptionText(userId);
-    updatePrivateTabText();
+    updatePrivateOptionLabel(userId);
 }
 
 function removeUserFromChatList(userId) {
@@ -536,46 +585,10 @@ function removeUserFromChatList(userId) {
 
     const option = select.querySelector(`option[value="${userId}"]`);
     if (option) option.remove();
+
+    delete privateUnreadCounts[userId];
+    updatePrivateNotificationBadge();
 }
-
-/* ================= PRIVATE CHAT UNREAD HELPERS ================= */
-
-function getTotalPrivateUnreadCount() {
-    return Object.values(privateUnreadCounts).reduce((sum, count) => sum + count, 0);
-}
-
-function updatePrivateTabText() {
-    const privateBtn = document.getElementById("private-tab-btn");
-    if (!privateBtn) return;
-
-    const totalUnread = getTotalPrivateUnreadCount();
-    privateBtn.innerText = totalUnread > 0 ? `Private (${totalUnread})` : "Private";
-}
-
-function updatePrivateChatOptionText(userId) {
-    const select = document.getElementById("chat-target");
-    if (!select) return;
-
-    const option = select.querySelector(`option[value="${userId}"]`);
-    if (!option) return;
-
-    const name = userNames[userId] || "Unknown";
-    const unread = privateUnreadCounts[userId] || 0;
-
-    option.text = unread > 0
-        ? `Private: ${name} (${unread})`
-        : `Private: ${name}`;
-}
-
-function clearPrivateUnread(userId) {
-    if (!userId) return;
-
-    privateUnreadCounts[userId] = 0;
-    updatePrivateChatOptionText(userId);
-    updatePrivateTabText();
-}
-
-/* ============================================================= */
 
 /* ================= MEDIA CONTROLS ================= */
 
