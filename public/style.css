@@ -996,32 +996,30 @@ body {
     }
 }
 
-.linkedin-icon-btn{
+/* LinkedIn Icon Center Fix */
 
+.linkedin-icon-btn{
     display:flex;
     align-items:center;
     justify-content:center;
 
-    width:42px;
-    height:42px;
+    width:44px;
+    height:44px;
+
+    margin:18px auto 0 auto;   /* THIS centers the icon */
 
     border-radius:50%;
-
     background:#0077b5;
 
-    transition:0.25s;
-
-    margin-top:10px;
+    transition:0.25s ease;
 }
 
 .linkedin-icon-btn:hover{
-
     background:#005582;
-    transform:scale(1.1);
+    transform:scale(1.08);
 }
 
 .linkedin-icon-btn svg{
-
     width:18px;
     height:18px;
 }
