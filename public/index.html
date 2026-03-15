@@ -91,6 +91,13 @@
             window.location.href = `/meeting.html?room=${roomId}`;
         }
 
+        function scrollToHome(){
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
         function scrollToDevelopers() {
             document.getElementById("developers-section").scrollIntoView({
                 behavior: "smooth"
