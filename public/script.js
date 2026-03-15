@@ -52,7 +52,6 @@ const configuration = {
 };
 
 async function init() {
-
     localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: {
@@ -87,6 +86,11 @@ async function init() {
 
             renderChatMessages();
         });
+
+    const muteBtn = document.getElementById("mute-btn");
+    const cameraBtn = document.getElementById("camera-btn");
+    if (muteBtn) muteBtn.classList.add("active-state");
+    if (cameraBtn) cameraBtn.classList.add("active-state");
 
     socket.on("room-start-time", (startTime) => {
         meetingStartTime = startTime;
@@ -945,6 +949,13 @@ document.addEventListener("leavepictureinpicture", () => {
     if (pipStream) {
         pipStream.getTracks().forEach(track => track.stop());
         pipStream = null;
+    }
+});
+
+document.addEventListener("click", function (event) {
+    const modal = document.getElementById("leave-meeting-modal");
+    if (event.target === modal) {
+        closeLeaveModal();
     }
 });
 
