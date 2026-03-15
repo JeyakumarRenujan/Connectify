@@ -113,6 +113,20 @@ body {
     min-width: 180px;
     text-align: center;
     padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.team-photo {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #7c4dff;
+    background: #2a2a2a;
+    padding: 2px;
 }
 
 .team-name {
@@ -120,17 +134,29 @@ body {
     font-size: 15px;
     font-weight: 600;
     color: #ddd;
-    margin-bottom: 8px;
 }
 
-.team-member-card a {
-    color: #7c4dff;
+.linkedin-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #2a2a2a;
+    transition: 0.2s ease;
     text-decoration: none;
-    font-size: 14px;
 }
 
-.team-member-card a:hover {
-    text-decoration: underline;
+.linkedin-link:hover {
+    background: #7c4dff;
+    transform: translateY(-2px);
+}
+
+.linkedin-icon {
+    width: 18px;
+    height: 18px;
+    fill: white;
 }
 
 /* ================= MEETING PAGE ================= */
