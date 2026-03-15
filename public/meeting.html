@@ -18,6 +18,10 @@
         </div>
 
         <span id="room-display"></span>
+
+        <!-- NEW: Meeting Timer -->
+        <span id="meeting-timer" class="meeting-timer">00:00:00</span>
+
     </div>
 
     <div class="right-header">
@@ -32,7 +36,17 @@
 
     <!-- CHAT PANEL -->
     <div id="chat-panel" class="chat-panel">
-        <div class="chat-header">Chat</div>
+
+        <div class="chat-header">
+            Chat
+        </div>
+
+        <!-- NEW: CHAT TYPE SELECTOR -->
+        <div class="chat-mode">
+            <select id="chat-target">
+                <option value="group">Group Chat</option>
+            </select>
+        </div>
 
         <div id="messages" class="messages"></div>
 
@@ -40,18 +54,26 @@
             <input type="text" id="chat-message" placeholder="Type a message...">
             <button onclick="sendMessage()">Send</button>
         </div>
+
     </div>
 
 </div>
 
 <!-- CONTROLS -->
 <div class="controls">
-    <button class="control-btn" onclick="toggleMute()">🎤</button>
-    <button class="control-btn" onclick="toggleVideo()">📷</button>
+
+    <button id="mute-btn" class="control-btn" onclick="toggleMute()">🎤</button>
+
+    <button id="camera-btn" class="control-btn" onclick="toggleVideo()">📷</button>
+
     <button class="control-btn" id="screen-share-btn" onclick="toggleScreenShare()">🖥️</button>
+
     <button class="control-btn" onclick="toggleChat()">💬</button>
+
     <button class="control-btn" onclick="toggleMirroredPiP()">🪟</button>
+
     <button class="control-btn end-call" onclick="endCall()">🔴 End</button>
+
 </div>
 
 <script src="/socket.io/socket.io.js"></script>

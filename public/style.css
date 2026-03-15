@@ -407,3 +407,81 @@ body {
     font-weight: 600;
     color: #ddd;
 }
+
+/* ================= TEAM SECTION ================= */
+
+.team-section{
+    margin-top: 25px;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+}
+
+.team-section h3{
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.team-member{
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.team-member a{
+    color: #7c4dff;
+    text-decoration: none;
+}
+
+.team-member a:hover{
+    text-decoration: underline;
+}
+
+/* ================= MEETING TIMER ================= */
+
+.meeting-timer{
+    font-size: 13px;
+    color: #7c4dff;
+    background: rgba(124,77,255,0.15);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* ================= CHAT MODE SELECT ================= */
+
+.chat-mode{
+    padding: 6px 10px;
+    border-bottom: 1px solid #333;
+}
+
+.chat-mode select{
+    width: 100%;
+    padding: 6px;
+    background: #2a2a2a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+/* ================= PRIVATE MESSAGE STYLE ================= */
+
+.chat-bubble.private{
+    background: #3a2a5a;
+}
+
+/* ================= CONTROL BUTTON STATES ================= */
+
+.control-btn.active{
+    background: #7c4dff;
+}
+
+.control-btn.off{
+    background: #a00000;
+}
+
+/* nicer hover effect */
+.control-btn:hover{
+    transform: translateY(-1px);
+}

@@ -11,7 +11,8 @@ app.use(express.static("public"));
 let users = {};
 let muteStates = {};
 let cameraStates = {};
-let screenShareStates = {};   // 🔥 NEW
+let screenShareStates = {};
+let roomStartTimes = {};   // 🔥 NEW
 
 io.on("connection", (socket) => {
 
@@ -26,31 +27,51 @@ io.on("connection", (socket) => {
 
         // Default states
         muteStates[socket.id] = false;
-        cameraStates[socket.id] = true;       // default camera ON
-        screenShareStates[socket.id] = false; // default not sharing
+        cameraStates[socket.id] = true;
+        screenShareStates[socket.id] = false;
+
+        // 🔥 Set room start time only once (first person who starts room)
+        if (!roomStartTimes[roomId]) {
+            roomStartTimes[roomId] = Date.now();
+        }
 
         console.log(`${username} joined room ${roomId}`);
+
+        // 🔥 Send room start time to current user
+        io.to(socket.id).emit("room-start-time", roomStartTimes[roomId]);
+
+        // 🔥 Send existing users to new joiner
+        const existingUsers = [];
+        Object.keys(users).forEach((id) => {
+            if (id !== socket.id && users[id].roomId === roomId) {
+                existingUsers.push({
+                    userId: id,
+                    username: users[id].username
+                });
+            }
+        });
+        io.to(socket.id).emit("existing-users", existingUsers);
 
         // Notify others
         socket.to(roomId).emit("user-connected", socket.id, username);
 
         // 🔥 SEND EXISTING MUTE STATES
         Object.keys(muteStates).forEach((id) => {
-            if (id !== socket.id) {
+            if (id !== socket.id && users[id] && users[id].roomId === roomId) {
                 io.to(socket.id).emit("mute-status", id, muteStates[id]);
             }
         });
 
         // 🔥 SEND EXISTING CAMERA STATES
         Object.keys(cameraStates).forEach((id) => {
-            if (id !== socket.id) {
+            if (id !== socket.id && users[id] && users[id].roomId === roomId) {
                 io.to(socket.id).emit("camera-status", id, cameraStates[id]);
             }
         });
 
         // 🔥 SEND EXISTING SCREEN SHARE STATES
         Object.keys(screenShareStates).forEach((id) => {
-            if (id !== socket.id) {
+            if (id !== socket.id && users[id] && users[id].roomId === roomId) {
                 io.to(socket.id).emit("screen-share-status", id, screenShareStates[id]);
             }
         });
@@ -77,7 +98,7 @@ io.on("connection", (socket) => {
             io.to(targetId).emit("ice-candidate", candidate, socket.id);
         });
 
-        // ================= CHAT =================
+        // ================= GROUP CHAT =================
 
         socket.on("chat-message", (message) => {
             const user = users[socket.id];
@@ -87,6 +108,24 @@ io.on("connection", (socket) => {
                 "chat-message",
                 message,
                 user.username
+            );
+        });
+
+        // ================= PRIVATE CHAT =================
+
+        socket.on("private-message", ({ targetId, message }) => {
+            const sender = users[socket.id];
+            const receiver = users[targetId];
+
+            if (!sender || !receiver) return;
+
+            // only allow private chat inside same room
+            if (sender.roomId !== receiver.roomId) return;
+
+            io.to(targetId).emit(
+                "private-message",
+                sender.username,
+                message
             );
         });
 
@@ -145,12 +184,23 @@ io.on("connection", (socket) => {
             const user = users[socket.id];
             if (!user) return;
 
-            socket.to(user.roomId).emit("user-disconnected", socket.id);
+            const roomId = user.roomId;
+
+            socket.to(roomId).emit("user-disconnected", socket.id);
 
             delete users[socket.id];
             delete muteStates[socket.id];
             delete cameraStates[socket.id];
             delete screenShareStates[socket.id];
+
+            // 🔥 clear room start time if room becomes empty
+            const roomStillHasUsers = Object.values(users).some(
+                (u) => u.roomId === roomId
+            );
+
+            if (!roomStillHasUsers) {
+                delete roomStartTimes[roomId];
+            }
         });
     });
 });

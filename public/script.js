@@ -29,6 +29,11 @@ let screenTrack = null;
 let screenShareStream = null;
 /* ========================================================= */
 
+/* ================= MEETING TIMER ================= */
+let meetingStartTime = Date.now();
+let meetingTimerInterval = null;
+/* ================================================= */
+
 const configuration = {
     iceServers: [
         { urls: "stun:stun.l.google.com:19302" },
@@ -69,6 +74,7 @@ async function init() {
     socket.on("user-connected", (userId, remoteName) => {
         userNames[userId] = remoteName;
         connectToNewUser(userId);
+        addUserToChatList(userId, remoteName);
     });
 
     socket.on("offer", async (offer, userId, remoteName) => {
@@ -175,6 +181,12 @@ async function init() {
             removeFocusMode();
         }
     });
+
+    socket.on("private-message", (sender, message) => {
+        addMessage(sender + " (Private)", message, true);
+    });
+
+    startMeetingTimer();
 }
 
 function createPeerConnection(userId) {
@@ -337,19 +349,42 @@ function removeFocusMode() {
 /* ================= CHAT ================= */
 
 function sendMessage() {
+
     const input = document.getElementById("chat-message");
-    if (input.value.trim() !== "") {
-        socket.emit("chat-message", input.value);
-        input.value = "";
+    const target = document.getElementById("chat-target");
+
+    if (!input.value.trim()) return;
+
+    const message = input.value;
+    const targetId = target.value;
+
+    if (targetId === "group") {
+
+        socket.emit("chat-message", message);
+
+    } else {
+
+        socket.emit("private-message", {
+            targetId: targetId,
+            message: message
+        });
+
+        addMessage("You (Private)", message);
     }
+
+    input.value = "";
 }
 
-function addMessage(sender, message) {
+function addMessage(sender, message, isPrivate = false) {
 
     const messages = document.getElementById("messages");
 
     const div = document.createElement("div");
     div.classList.add("chat-bubble");
+
+    if (isPrivate) {
+        div.style.background = "#3a2a5a";
+    }
 
     div.innerHTML = `<strong>${sender}</strong><br>${message}`;
 
@@ -369,6 +404,11 @@ function toggleMute() {
 
     const icon = document.getElementById("mute-local");
     if (icon) icon.style.display = isMuted ? "block" : "none";
+
+    const btn = document.getElementById("mute-btn");
+    if (btn) {
+        btn.innerText = isMuted ? "🔇" : "🎤";
+    }
 
     socket.emit("mute-status", isMuted);
 }
@@ -411,6 +451,11 @@ function toggleVideo() {
 
     // 🔥 Inform others
     socket.emit("camera-status", isOn);
+}
+
+const btn = document.getElementById("camera-btn");
+if (btn) {
+    btn.innerText = isOn ? "📷" : "🚫📷";
 }
 
 /* ================= SCREEN SHARE ================= */
@@ -575,6 +620,30 @@ function updateParticipantCount() {
     }
 }
 
+/* ================= MEETING TIMER ================= */
+
+function startMeetingTimer() {
+
+    const timerElement = document.getElementById("meeting-timer");
+    if (!timerElement) return;
+
+    meetingTimerInterval = setInterval(() => {
+
+        const now = Date.now();
+        const diff = now - meetingStartTime;
+
+        const hours = Math.floor(diff / 3600000);
+        const minutes = Math.floor((diff % 3600000) / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
+
+        timerElement.innerText =
+            String(hours).padStart(2, '0') + ":" +
+            String(minutes).padStart(2, '0') + ":" +
+            String(seconds).padStart(2, '0');
+
+    }, 1000);
+}
+
 /* ================= CUSTOM MIRRORED PIP ================= */
 
 async function startMirroredPiP() {
@@ -713,6 +782,18 @@ function endCall() {
     Object.values(peers).forEach(peer => peer.close());
 
     window.location.href = "/";
+}
+
+function addUserToChatList(userId, name) {
+
+    const select = document.getElementById("chat-target");
+    if (!select) return;
+
+    const option = document.createElement("option");
+    option.value = userId;
+    option.text = "Private: " + name;
+
+    select.appendChild(option);
 }
 
 init();
