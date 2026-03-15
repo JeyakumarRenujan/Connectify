@@ -532,3 +532,36 @@ body {
     border-radius: 6px;
     font-size: 13px;
 }
+
+/* ================= CHAT TABS ================= */
+
+.chat-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 8px 10px;
+    border-bottom: 1px solid #333;
+}
+
+.chat-tab {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: #2a2a2a;
+    color: white;
+    cursor: pointer;
+}
+
+.chat-tab.active {
+    background: #7c4dff;
+}
+
+.chat-subtitle {
+    font-size: 12px;
+    color: #aaa;
+    padding: 8px 10px 0;
+}
+
+.hidden-mode {
+    display: none;
+}

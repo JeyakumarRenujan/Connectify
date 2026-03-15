@@ -12,7 +12,7 @@ let users = {};
 let muteStates = {};
 let cameraStates = {};
 let screenShareStates = {};
-let roomStartTimes = {};   // 🔥 NEW
+let roomStartTimes = {};
 
 io.on("connection", (socket) => {
 
@@ -25,22 +25,18 @@ io.on("connection", (socket) => {
             username: username || "Guest"
         };
 
-        // Default states
         muteStates[socket.id] = false;
         cameraStates[socket.id] = true;
         screenShareStates[socket.id] = false;
 
-        // 🔥 Set room start time only once (first person who starts room)
         if (!roomStartTimes[roomId]) {
             roomStartTimes[roomId] = Date.now();
         }
 
         console.log(`${username} joined room ${roomId}`);
 
-        // 🔥 Send room start time to current user
         io.to(socket.id).emit("room-start-time", roomStartTimes[roomId]);
 
-        // 🔥 Send existing users to new joiner
         const existingUsers = [];
         Object.keys(users).forEach((id) => {
             if (id !== socket.id && users[id].roomId === roomId) {
@@ -52,31 +48,25 @@ io.on("connection", (socket) => {
         });
         io.to(socket.id).emit("existing-users", existingUsers);
 
-        // Notify others
         socket.to(roomId).emit("user-connected", socket.id, username);
 
-        // 🔥 SEND EXISTING MUTE STATES
         Object.keys(muteStates).forEach((id) => {
             if (id !== socket.id && users[id] && users[id].roomId === roomId) {
                 io.to(socket.id).emit("mute-status", id, muteStates[id]);
             }
         });
 
-        // 🔥 SEND EXISTING CAMERA STATES
         Object.keys(cameraStates).forEach((id) => {
             if (id !== socket.id && users[id] && users[id].roomId === roomId) {
                 io.to(socket.id).emit("camera-status", id, cameraStates[id]);
             }
         });
 
-        // 🔥 SEND EXISTING SCREEN SHARE STATES
         Object.keys(screenShareStates).forEach((id) => {
             if (id !== socket.id && users[id] && users[id].roomId === roomId) {
                 io.to(socket.id).emit("screen-share-status", id, screenShareStates[id]);
             }
         });
-
-        // ================= SIGNALING =================
 
         socket.on("offer", (offer, targetId) => {
             const user = users[socket.id];
@@ -98,8 +88,6 @@ io.on("connection", (socket) => {
             io.to(targetId).emit("ice-candidate", candidate, socket.id);
         });
 
-        // ================= GROUP CHAT =================
-
         socket.on("chat-message", (message) => {
             const user = users[socket.id];
             if (!user) return;
@@ -111,28 +99,22 @@ io.on("connection", (socket) => {
             );
         });
 
-        // ================= PRIVATE CHAT =================
-
         socket.on("private-message", ({ targetId, message }) => {
             const sender = users[socket.id];
             const receiver = users[targetId];
 
             if (!sender || !receiver) return;
-
-            // only allow private chat inside same room
             if (sender.roomId !== receiver.roomId) return;
 
             io.to(targetId).emit(
                 "private-message",
+                socket.id,
                 sender.username,
                 message
             );
         });
 
-        // ================= MUTE =================
-
         socket.on("mute-status", (isMuted) => {
-
             const user = users[socket.id];
             if (!user) return;
 
@@ -145,10 +127,7 @@ io.on("connection", (socket) => {
             );
         });
 
-        // ================= CAMERA =================
-
         socket.on("camera-status", (isOn) => {
-
             const user = users[socket.id];
             if (!user) return;
 
@@ -161,10 +140,7 @@ io.on("connection", (socket) => {
             );
         });
 
-        // ================= SCREEN SHARE =================
-
         socket.on("screen-share-status", (isSharing) => {
-
             const user = users[socket.id];
             if (!user) return;
 
@@ -177,10 +153,7 @@ io.on("connection", (socket) => {
             );
         });
 
-        // ================= DISCONNECT =================
-
         socket.on("disconnect", () => {
-
             const user = users[socket.id];
             if (!user) return;
 
@@ -193,7 +166,6 @@ io.on("connection", (socket) => {
             delete cameraStates[socket.id];
             delete screenShareStates[socket.id];
 
-            // 🔥 clear room start time if room becomes empty
             const roomStillHasUsers = Object.values(users).some(
                 (u) => u.roomId === roomId
             );

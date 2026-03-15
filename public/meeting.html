@@ -4,7 +4,6 @@
     <title>Connectify Meeting</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="images/icon.png">
 </head>
 
 <body class="meeting-body">
@@ -12,17 +11,13 @@
 <header class="top-bar">
     <div class="left-header">
 
-        <!-- Brand Section -->
         <div class="brand-header">
             <img src="images/logo.png" alt="Connectify Logo" class="header-logo">
             <h2 class="app-title">Connectify</h2>
         </div>
 
         <span id="room-display"></span>
-
-        <!-- NEW: Meeting Timer -->
         <span id="meeting-timer" class="meeting-timer">00:00:00</span>
-
     </div>
 
     <div class="right-header">
@@ -32,22 +27,26 @@
 
 <div class="main-container">
 
-    <!-- VIDEO GRID -->
     <div id="video-grid" class="video-grid"></div>
 
-    <!-- CHAT PANEL -->
     <div id="chat-panel" class="chat-panel">
 
-        <div class="chat-header">
-            Chat
+        <div class="chat-header">Chat</div>
+
+        <!-- CHAT TABS -->
+        <div class="chat-tabs">
+            <button id="group-tab-btn" class="chat-tab active" onclick="switchChatTab('group')">Group</button>
+            <button id="private-tab-btn" class="chat-tab" onclick="switchChatTab('private')">Private</button>
         </div>
 
-        <!-- NEW: CHAT TYPE SELECTOR -->
-        <div class="chat-mode">
-            <select id="chat-target">
-                <option value="group">Group Chat</option>
+        <!-- PRIVATE TARGET -->
+        <div id="private-chat-controls" class="chat-mode hidden-mode">
+            <select id="chat-target" onchange="renderChatMessages()">
+                <option value="">Select a person</option>
             </select>
         </div>
+
+        <div id="chat-subtitle" class="chat-subtitle">Group Chat</div>
 
         <div id="messages" class="messages"></div>
 
@@ -55,26 +54,17 @@
             <input type="text" id="chat-message" placeholder="Type a message...">
             <button onclick="sendMessage()">Send</button>
         </div>
-
     </div>
 
 </div>
 
-<!-- CONTROLS -->
 <div class="controls">
-
     <button id="mute-btn" class="control-btn" onclick="toggleMute()">🎤</button>
-
     <button id="camera-btn" class="control-btn" onclick="toggleVideo()">📷</button>
-
     <button class="control-btn" id="screen-share-btn" onclick="toggleScreenShare()">🖥️</button>
-
     <button class="control-btn" onclick="toggleChat()">💬</button>
-
     <button class="control-btn" onclick="toggleMirroredPiP()">🪟</button>
-
     <button class="control-btn end-call" onclick="endCall()">🔴 End</button>
-
 </div>
 
 <script src="/socket.io/socket.io.js"></script>

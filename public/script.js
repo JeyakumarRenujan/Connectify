@@ -14,6 +14,10 @@ let localCameraStates = {};
 let localScreenShareStates = {};
 let focusedId = null;
 
+let groupMessages = [];
+let privateChats = {};
+let activeChatTab = "group";
+
 /* ================= CUSTOM MIRRORED PIP VARIABLES ================= */
 let pipCanvas = null;
 let pipContext = null;
@@ -125,11 +129,26 @@ async function init() {
     });
 
     socket.on("chat-message", (message, sender) => {
-        addMessage(sender, message);
+        groupMessages.push({ sender, message });
+        if (activeChatTab === "group") {
+            renderChatMessages();
+        }
     });
 
-    socket.on("private-message", (sender, message) => {
-        addMessage(sender + " (Private)", message, true);
+    socket.on("private-message", (senderId, senderName, message) => {
+        if (!privateChats[senderId]) {
+            privateChats[senderId] = [];
+        }
+
+        privateChats[senderId].push({
+            sender: senderName,
+            message,
+            isPrivate: true
+        });
+
+        if (activeChatTab === "private") {
+            renderChatMessages();
+        }
     });
 
     socket.on("mute-status", (userId, isMuted) => {
@@ -190,6 +209,7 @@ async function init() {
         delete localMuteStates[userId];
         delete localCameraStates[userId];
         delete localScreenShareStates[userId];
+        delete privateChats[userId];
 
         removeUserFromChatList(userId);
         updateParticipantCount();
@@ -197,7 +217,11 @@ async function init() {
         if (focusedId === userId) {
             removeFocusMode();
         }
+
+        renderChatMessages();
     });
+
+    startMeetingTimer();
 }
 
 function createPeerConnection(userId) {
@@ -343,43 +367,105 @@ function removeFocusMode() {
 
 /* ================= CHAT ================= */
 
+function switchChatTab(tab) {
+    activeChatTab = tab;
+
+    const groupBtn = document.getElementById("group-tab-btn");
+    const privateBtn = document.getElementById("private-tab-btn");
+    const privateControls = document.getElementById("private-chat-controls");
+    const subtitle = document.getElementById("chat-subtitle");
+
+    if (tab === "group") {
+        groupBtn.classList.add("active");
+        privateBtn.classList.remove("active");
+        privateControls.classList.add("hidden-mode");
+        subtitle.innerText = "Group Chat";
+    } else {
+        privateBtn.classList.add("active");
+        groupBtn.classList.remove("active");
+        privateControls.classList.remove("hidden-mode");
+
+        const target = document.getElementById("chat-target");
+        const selectedText = target.options[target.selectedIndex]?.text || "Select a person";
+        subtitle.innerText = selectedText;
+    }
+
+    renderChatMessages();
+}
+
+function renderChatMessages() {
+    const messages = document.getElementById("messages");
+    const subtitle = document.getElementById("chat-subtitle");
+    messages.innerHTML = "";
+
+    if (activeChatTab === "group") {
+        subtitle.innerText = "Group Chat";
+
+        groupMessages.forEach((msg) => {
+            const div = document.createElement("div");
+            div.classList.add("chat-bubble", "group");
+            div.innerHTML = `<strong>${msg.sender}</strong><br>${msg.message}`;
+            messages.appendChild(div);
+        });
+    } else {
+        const targetId = document.getElementById("chat-target").value;
+
+        if (!targetId) {
+            subtitle.innerText = "Select a person";
+            messages.innerHTML = `<div class="chat-bubble">No private chat selected.</div>`;
+            return;
+        }
+
+        const targetName = userNames[targetId] || "Private Chat";
+        subtitle.innerText = "Private: " + targetName;
+
+        const chatList = privateChats[targetId] || [];
+
+        chatList.forEach((msg) => {
+            const div = document.createElement("div");
+            div.classList.add("chat-bubble", "private");
+            div.innerHTML = `<strong>${msg.sender}</strong><br>${msg.message}`;
+            messages.appendChild(div);
+        });
+    }
+
+    messages.scrollTop = messages.scrollHeight;
+}
+
 function sendMessage() {
     const input = document.getElementById("chat-message");
-    const target = document.getElementById("chat-target");
-
     if (!input.value.trim()) return;
 
     const message = input.value;
-    const targetId = target.value;
 
-    if (targetId === "group") {
+    if (activeChatTab === "group") {
         socket.emit("chat-message", message);
     } else {
+        const targetId = document.getElementById("chat-target").value;
+        if (!targetId) {
+            alert("Please select a person for private chat");
+            return;
+        }
+
         socket.emit("private-message", {
             targetId: targetId,
             message: message
         });
 
-        addMessage("You (Private)", message, true);
+        if (!privateChats[targetId]) {
+            privateChats[targetId] = [];
+        }
+
+        privateChats[targetId].push({
+            sender: "You (Private)",
+            message,
+            isPrivate: true
+        });
+
+        renderChatMessages();
     }
 
     input.value = "";
-}
-
-function addMessage(sender, message, isPrivate = false) {
-    const messages = document.getElementById("messages");
-
-    const div = document.createElement("div");
-    div.classList.add("chat-bubble");
-
-    if (isPrivate) {
-        div.classList.add("private");
-    }
-
-    div.innerHTML = `<strong>${sender}</strong><br>${message}`;
-
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
 }
 
 function addUserToChatList(userId, name) {
@@ -391,7 +477,6 @@ function addUserToChatList(userId, name) {
     const option = document.createElement("option");
     option.value = userId;
     option.text = "Private: " + name;
-
     select.appendChild(option);
 }
 
