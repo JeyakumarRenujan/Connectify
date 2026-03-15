@@ -1,119 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Connectify</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connectify</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="images/icon.png">
 </head>
-
 <body class="join-body">
 
-    <div class="join-page-wrapper">
+    <!-- Top Navigation -->
+    <header class="landing-header">
+        <div class="landing-brand">
+            <img src="images/logo.png" alt="Connectify Logo" class="landing-logo">
+            <span class="landing-brand-text">Connectify</span>
+        </div>
 
-        <!-- ================= JOIN BOX ================= -->
-        <div class="join-container">
+        <button class="contact-nav-btn" onclick="scrollToDevelopers()">Contact</button>
+    </header>
 
+    <!-- Hero / Join Section -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+
+        <div class="join-container professional-card">
             <div class="brand">
                 <img src="images/logo.png" alt="Connectify Logo" class="brand-logo">
-                <h1 class="logo-text">Connectify</h1>
+                <div class="brand-text-wrap">
+                    <h1 class="logo-text">Connectify</h1>
+                    <p class="tagline">Seamless Real-Time Communication</p>
+                </div>
             </div>
 
-            <p class="tagline">Seamless Real-Time Communication</p>
-
-            <input type="text" id="username" placeholder="Enter Your Name" required>
-            <input type="text" id="roomId" placeholder="Enter Room ID" required>
-
+            <input type="text" id="username" placeholder="Enter Your Name">
+            <input type="text" id="room-id" placeholder="Enter Room ID">
             <button onclick="joinRoom()">Join Room</button>
-
         </div>
 
-        <!-- ================= TEAM SECTION ================= -->
-        <div class="team-footer-wrapper">
+        <div class="scroll-indicator" onclick="scrollToDevelopers()">
+            <span>Scroll to explore</span>
+            <div class="scroll-arrow">⌄</div>
+        </div>
+    </section>
 
-            <h3 class="team-title">Meet the Developers</h3>
+    <!-- Developers Section -->
+    <section id="developers-section" class="developers-section">
+        <div class="developers-wrapper">
+            <h2 class="developers-heading">Meet the Developers</h2>
+            <p class="developers-subtitle">Built with passion for modern real-time communication.</p>
 
-            <div class="team-footer">
-
-                <!-- MEMBER 1 -->
-                <div class="team-member-card">
-                    <img src="images/dev/renu.jpeg" alt="Renujan" class="team-photo">
-                    <span class="team-name">Renujan J. 2022/E/065</span>
-
-                    <a href="https://www.linkedin.com/in/jeyakumarrenujan03"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="linkedin-link"
-                       aria-label="Renujan LinkedIn">
-
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             viewBox="0 0 448 512"
-                             class="linkedin-icon">
-                            <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8A53.79 53.79 0 0 1 53.79 0a53.79 53.79 0 0 1 53.79 53.8c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.7-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/>
-                        </svg>
-
-                    </a>
+            <div class="developers-grid">
+                <div class="developer-card">
+                    <img src="images/renu.jpg" alt="Renujan" class="developer-photo">
+                    <h3 class="developer-name">Renujan J.</h3>
+                    <p class="developer-id">2022/E/065</p>
+                    <a href="https://linkedin.com" target="_blank" class="developer-link">LinkedIn</a>
                 </div>
 
-                <!-- MEMBER 2 -->
-                <div class="team-member-card">
-                    <img src="images/dev/kil.jpeg" alt="Kilshan" class="team-photo">
-                    <span class="team-name">Kilshan P. 2022/E/109</span>
-
-                    <a href="http://www.linkedin.com/in/kil-shan-9b76513b7"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="linkedin-link"
-                       aria-label="Kilshan Profile Link">
-
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             viewBox="0 0 448 512"
-                             class="linkedin-icon">
-                            <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8A53.79 53.79 0 0 1 53.79 0a53.79 53.79 0 0 1 53.79 53.8c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.7-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/>
-                        </svg>
-
-                    </a>
+                <div class="developer-card">
+                    <img src="images/kilshan.jpg" alt="Kilshan" class="developer-photo">
+                    <h3 class="developer-name">Kilshan P.</h3>
+                    <p class="developer-id">2022/E/109</p>
+                    <a href="https://linkedin.com" target="_blank" class="developer-link">LinkedIn</a>
                 </div>
 
-                <!-- MEMBER 3 -->
-                <div class="team-member-card">
-                    <img src="images/dev/vasu.jpeg" alt="Vasunthar" class="team-photo">
-                    <span class="team-name">Vasunthar S. 2022/E/139</span>
-
-                    <a href="https://www.linkedin.com/in/vasunthar-selvanayagam-227081294?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="linkedin-link"
-                       aria-label="Vasunthar LinkedIn">
-
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             viewBox="0 0 448 512"
-                             class="linkedin-icon">
-                            <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8A53.79 53.79 0 0 1 53.79 0a53.79 53.79 0 0 1 53.79 53.8c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.7-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/>
-                        </svg>
-
-                    </a>
+                <div class="developer-card">
+                    <img src="images/vasunthar.jpg" alt="Vasunthar" class="developer-photo">
+                    <h3 class="developer-name">Vasunthar S.</h3>
+                    <p class="developer-id">2022/E/139</p>
+                    <a href="https://linkedin.com" target="_blank" class="developer-link">LinkedIn</a>
                 </div>
-
             </div>
-
         </div>
+    </section>
 
-    </div>
+    <script>
+        function joinRoom() {
+            const username = document.getElementById("username").value.trim();
+            const roomId = document.getElementById("room-id").value.trim();
 
-<script>
-function joinRoom() {
-    const name = document.getElementById("username").value.trim();
-    const room = document.getElementById("roomId").value.trim();
+            if (!username || !roomId) {
+                alert("Please enter your name and room ID");
+                return;
+            }
 
-    if (name && room) {
-        localStorage.setItem("username", name);
-        window.location.href = `meeting.html?room=${room}`;
-    } else {
-        alert("Please enter your name and room ID");
-    }
-}
-</script>
+            localStorage.setItem("username", username);
+            window.location.href = `/meeting.html?room=${roomId}`;
+        }
+
+        function scrollToDevelopers() {
+            document.getElementById("developers-section").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+    </script>
 
 </body>
 </html>

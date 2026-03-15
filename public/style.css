@@ -5,169 +5,302 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+    background: radial-gradient(circle at top, #161616 0%, #0b0b0d 55%, #050507 100%);
     color: white;
 }
 
-/* ================= JOIN PAGE ================= */
+/* ================= LANDING / JOIN PAGE ================= */
 
 .join-body {
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
-.join-page-wrapper {
+/* Top Header */
+
+.landing-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 18px 34px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: rgba(10, 10, 12, 0.45);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.landing-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.landing-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #8b5cf6;
+    background: white;
+    padding: 2px;
+}
+
+.landing-brand-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: #8b5cf6;
+    letter-spacing: 0.4px;
+}
+
+.contact-nav-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 10px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.contact-nav-btn:hover {
+    background: #8b5cf6;
+    border-color: #8b5cf6;
+    transform: translateY(-1px);
+}
+
+/* Hero Section */
+
+.hero-section {
+    position: relative;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 30px 20px;
-    gap: 35px;
+    justify-content: center;
+    padding: 120px 20px 80px;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(139,92,246,0.12), transparent 30%),
+        radial-gradient(circle at 80% 30%, rgba(124,77,255,0.08), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(255,255,255,0.03), transparent 30%);
+    pointer-events: none;
+}
+
+.professional-card {
+    position: relative;
+    z-index: 2;
 }
 
 .join-container {
-    background: #1e1e1e;
-    padding: 50px 40px;
-    border-radius: 15px;
+    width: 100%;
+    max-width: 420px;
+    background: rgba(28, 28, 32, 0.88);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 42px 34px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
     text-align: center;
-    width: 340px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
-
-/* Brand Section (Logo + Text) */
 
 .brand {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: 14px;
+    margin-bottom: 26px;
 }
 
 .brand-logo {
-    width: 50px;
-    height: 50px;
+    width: 58px;
+    height: 58px;
     object-fit: cover;
     border-radius: 50%;
-    border: 2px solid #7c4dff;
+    border: 2px solid #8b5cf6;
     padding: 3px;
     background: white;
 }
 
-.logo-text {
-    font-size: 32px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #7c4dff;
+.brand-text-wrap {
+    text-align: left;
 }
 
-/* Tagline */
+.logo-text {
+    font-size: 42px;
+    font-weight: 800;
+    color: #8b5cf6;
+    line-height: 1;
+    margin-bottom: 6px;
+}
 
 .tagline {
     font-size: 14px;
-    color: #bbbbbb;
-    margin-bottom: 25px;
+    color: #d1d1d1;
 }
 
 .join-container input {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 18px;
-    border-radius: 8px;
-    border: none;
+    padding: 15px 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    border: 1px solid transparent;
     outline: none;
-    background: #2a2a2a;
+    background: #2a2a30;
     color: white;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+.join-container input:focus {
+    border-color: #8b5cf6;
+    background: #303038;
 }
 
 .join-container button {
     width: 100%;
-    padding: 12px;
-    background: #6200ea;
+    padding: 15px;
+    background: linear-gradient(135deg, #6d00ff, #8b5cf6);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 6px;
+    transition: all 0.2s ease;
 }
 
 .join-container button:hover {
-    background: #7c4dff;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(109, 0, 255, 0.35);
 }
 
-/* ================= TEAM FOOTER (COMPACT) ================= */
+/* Scroll indicator */
 
-.team-footer-wrapper {
-    width: 100%;
-    max-width: 620px;
+.scroll-indicator {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
+    gap: 6px;
+    color: #cfcfcf;
+    font-size: 13px;
+    cursor: pointer;
+    opacity: 0.85;
 }
 
-.team-title {
-    font-size: 15px;
-    color: #ccc;
-    margin-bottom: 12px;
-    letter-spacing: 1px;
+.scroll-arrow {
+    font-size: 20px;
+    animation: bounceArrow 1.6s infinite;
 }
 
-.team-footer {
-    width: 100%;
+@keyframes bounceArrow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+}
+
+/* Developers section */
+
+.developers-section {
+    min-height: 100vh;
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-    gap: 32px;
-    flex-wrap: wrap;
-    border-top: 1px solid #333;
-    padding-top: 14px;
+    padding: 100px 20px;
+    background:
+        linear-gradient(to bottom, rgba(8,8,10,0.98), rgba(15,15,18,1));
 }
 
-.team-member-card {
-    min-width: 120px;
+.developers-wrapper {
+    width: 100%;
+    max-width: 1100px;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
 }
 
-.team-photo {
-    width: 46px;
-    height: 46px;
+.developers-heading {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.developers-subtitle {
+    color: #b8b8b8;
+    font-size: 15px;
+    margin-bottom: 46px;
+}
+
+.developers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 26px;
+}
+
+.developer-card {
+    background: rgba(32, 32, 38, 0.9);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 22px;
+    padding: 28px 22px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.28);
+    transition: all 0.25s ease;
+}
+
+.developer-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(139,92,246,0.35);
+}
+
+.developer-photo {
+    width: 88px;
+    height: 88px;
     border-radius: 50%;
     object-fit: cover;
-    padding: 2px;
-    background: #2a2a2a;
+    border: 3px solid #8b5cf6;
+    margin-bottom: 16px;
 }
 
-.team-name {
-    font-size: 12px;
-    font-weight: 600;
-    color: #ddd;
-    line-height: 1.3;
+.developer-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: white;
 }
 
-.linkedin-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: #2a2a2a;
+.developer-id {
+    color: #c4c4c4;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+.developer-link {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: #2d2d35;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
     transition: 0.2s ease;
 }
 
-.linkedin-link:hover {
-    background: #7c4dff;
-}
-
-.linkedin-icon {
-    width: 12px;
-    height: 12px;
-    fill: white;
+.developer-link:hover {
+    background: #8b5cf6;
 }
 
 /* ================= MEETING PAGE ================= */
@@ -177,6 +310,8 @@ body {
     flex-direction: column;
     height: 100vh;
 }
+
+/* Top Bar */
 
 .top-bar {
     background: #1a1a1a;
@@ -191,6 +326,8 @@ body {
     align-items: center;
     gap: 15px;
 }
+
+/* Meeting Header Brand */
 
 .brand-header {
     display: flex;
@@ -224,12 +361,16 @@ body {
     color: #ccc;
 }
 
+/* ================= MAIN LAYOUT ================= */
+
 .main-container {
     flex: 1;
     display: flex;
     overflow: hidden;
     min-height: 0;
 }
+
+/* ================= VIDEO GRID ================= */
 
 .video-grid {
     flex: 1;
@@ -429,21 +570,6 @@ body {
     transform: translateY(-1px);
 }
 
-.control-btn.off-state {
-    background: #b3261e !important;
-    color: white;
-    border: none;
-}
-
-.control-btn.off-state:hover {
-    background: #8f1f19 !important;
-}
-
-.control-btn.active-state {
-    background: #2b2b2b;
-    color: white;
-}
-
 .icon-btn {
     width: 58px;
     height: 46px;
@@ -474,54 +600,19 @@ body {
     font-size: 16px;
 }
 
-/* ================= MOBILE ================= */
+.control-btn.off-state {
+    background: #b3261e !important;
+    color: white;
+    border: none;
+}
 
-@media (max-width: 768px) {
+.control-btn.off-state:hover {
+    background: #8f1f19 !important;
+}
 
-    .main-container {
-        flex-direction: column;
-    }
-
-    .video-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .video-grid.focus-mode .video-container.focused {
-        flex: 1;
-        height: auto;
-    }
-
-    .bottom-row .video-container {
-        width: 150px;
-        height: 100px;
-    }
-
-    .chat-panel {
-        position: absolute;
-        right: -100%;
-        width: 100%;
-        height: 100%;
-    }
-
-    .team-footer {
-        flex-direction: column;
-        gap: 18px;
-    }
-
-    .controls {
-        gap: 10px;
-        padding: 12px 10px;
-        flex-wrap: wrap;
-    }
-
-    .icon-btn {
-        width: 50px;
-        height: 44px;
-    }
-
-    .end-call-btn {
-        min-width: 86px;
-    }
+.control-btn.active-state {
+    background: #2b2b2b;
+    color: white;
 }
 
 /* Mirror only local video */
@@ -706,6 +797,8 @@ body {
     }
 }
 
+/* ================= CUSTOM LEAVE MODAL ================= */
+
 .custom-modal-overlay {
     position: fixed;
     inset: 0;
@@ -802,4 +895,82 @@ body {
 
 .modal-btn-danger:hover {
     background: #e02f25;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+    .landing-header {
+        padding: 14px 16px;
+    }
+
+    .landing-brand-text {
+        font-size: 18px;
+    }
+
+    .hero-section {
+        padding-top: 100px;
+    }
+
+    .join-container {
+        padding: 32px 22px;
+        border-radius: 20px;
+    }
+
+    .brand {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .brand-text-wrap {
+        text-align: center;
+    }
+
+    .logo-text {
+        font-size: 34px;
+    }
+
+    .developers-heading {
+        font-size: 28px;
+    }
+
+    .main-container {
+        flex-direction: column;
+    }
+
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .video-grid.focus-mode .video-container.focused {
+        flex: 1;
+        height: auto;
+    }
+
+    .bottom-row .video-container {
+        width: 150px;
+        height: 100px;
+    }
+
+    .chat-panel {
+        position: absolute;
+        right: -100%;
+        width: 100%;
+        height: 100%;
+    }
+
+    .controls {
+        gap: 10px;
+        padding: 12px 10px;
+        flex-wrap: wrap;
+    }
+
+    .icon-btn {
+        width: 50px;
+        height: 44px;
+    }
+
+    .end-call-btn {
+        min-width: 86px;
+    }
 }
