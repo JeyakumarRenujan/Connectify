@@ -2,79 +2,182 @@
 <html>
 <head>
     <title>Connectify</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="style.css">
+
     <link rel="shortcut icon" href="images/icon.png">
 </head>
+
 <body class="join-body">
 
-    <div class="join-page-wrapper">
+<div class="join-page-wrapper">
 
-        <div class="join-container">
+    <!-- ================= JOIN BOX ================= -->
 
-            <!-- Brand Section (Logo + Name) -->
-            <div class="brand">
-                <img src="images/logo.png" alt="Connectify Logo" class="brand-logo">
-                <h1 class="logo-text">Connectify</h1>
-            </div>
+    <div class="join-container">
 
-            <p class="tagline">Seamless Real-Time Communication</p>
-
-            <input type="text" id="username" placeholder="Enter Your Name" required>
-            <input type="text" id="roomId" placeholder="Enter Room ID" required>
-
-            <button onclick="joinRoom()">Join Room</button>
+        <div class="brand">
+            <img src="images/logo.png" alt="Connectify Logo" class="brand-logo">
+            <h1 class="logo-text">Connectify</h1>
         </div>
 
-        <!-- ================= TEAM FOOTER ================= -->
+        <p class="tagline">Seamless Real-Time Communication</p>
+
+        <input type="text" id="username" placeholder="Enter Your Name" required>
+
+        <input type="text" id="roomId" placeholder="Enter Room ID" required>
+
+        <button onclick="joinRoom()">Join Room</button>
+
+    </div>
+
+
+    <!-- ================= TEAM SECTION ================= -->
+
+    <div class="team-footer-wrapper">
+
+        <h3 class="team-title">Meet the Developers</h3>
+
         <div class="team-footer">
 
+            <!-- MEMBER 1 -->
             <div class="team-member-card">
-                <img src="images/member1.png" alt="Member 1" class="team-photo">
-                <span class="team-name">Member 1</span>
-                <a href="#" target="_blank" class="linkedin-link" aria-label="Member 1 LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="linkedin-icon">
-                        <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8A53.79 53.79 0 0 1 53.79 0a53.79 53.79 0 0 1 53.79 53.8c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.7-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/>
+
+                <img src="images/dev/renu.jpeg" alt="Member 1" class="team-photo">
+
+                <span class="team-name">Renujan J. 2022/E/065</span>
+
+                <a href="#" target="_blank" class="www.linkedin.com/in/jeyakumarrenujan03">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 448 512"
+                         class="linkedin-icon">
+
+                        <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09
+                        108.1 0 83.5 0 53.8A53.79 53.79 0 0 1 53.79
+                        0a53.79 53.79 0 0 1 53.79 53.8c0
+                        29.7-24.1 54.3-53.79
+                        54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.3
+                        0-55.7 37.7-55.7
+                        76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5
+                        42.7-48.3
+                        87.88-48.3
+                        94
+                        0
+                        111.28
+                        61.9
+                        111.28
+                        142.3V448z"/>
+
                     </svg>
+
                 </a>
+
             </div>
 
+
+            <!-- MEMBER 2 -->
             <div class="team-member-card">
-                <img src="images/member2.png" alt="Member 2" class="team-photo">
-                <span class="team-name">Member 2</span>
-                <a href="#" target="_blank" class="linkedin-link" aria-label="Member 2 LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="linkedin-icon">
-                        <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8A53.79 53.79 0 0 1 53.79 0a53.79 53.79 0 0 1 53.79 53.8c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.7-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/>
+
+                <img src="images/dev/kil.jpeg" alt="Member 2" class="team-photo">
+
+                <span class="team-name">Kilshan P. 2022/E/109</span>
+
+                <a href="#" target="_blank" class=" https://share.google/3AH1Y9SvZLSx366pU">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 448 512"
+                         class="linkedin-icon">
+
+                        <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09
+                        108.1 0 83.5 0 53.8A53.79 53.79 0 0 1 53.79
+                        0a53.79 53.79 0 0 1 53.79 53.8c0
+                        29.7-24.1 54.3-53.79
+                        54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.3
+                        0-55.7 37.7-55.7
+                        76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5
+                        42.7-48.3
+                        87.88-48.3
+                        94
+                        0
+                        111.28
+                        61.9
+                        111.28
+                        142.3V448z"/>
+
                     </svg>
+
                 </a>
+
             </div>
 
+
+            <!-- MEMBER 3 -->
             <div class="team-member-card">
-                <img src="images/member3.png" alt="Member 3" class="team-photo">
-                <span class="team-name">Member 3</span>
-                <a href="#" target="_blank" class="linkedin-link" aria-label="Member 3 LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="linkedin-icon">
-                        <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8A53.79 53.79 0 0 1 53.79 0a53.79 53.79 0 0 1 53.79 53.8c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.7-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/>
+
+                <img src="images/dev/vasu.jpeg" alt="Member 3" class="team-photo">
+
+                <span class="team-name">Vasunthar S. 2022/E/139</span>
+
+                <a href="#" target="_blank" class="https://www.linkedin.com/in/vasunthar-selvanayagam-227081294?utm_source=share_via&utm_content=profile&utm_medium=member_ios">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 448 512"
+                         class="linkedin-icon">
+
+                        <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09
+                        108.1 0 83.5 0 53.8A53.79 53.79 0 0 1 53.79
+                        0a53.79 53.79 0 0 1 53.79 53.8c0
+                        29.7-24.1 54.3-53.79
+                        54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.3
+                        0-55.7 37.7-55.7
+                        76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5
+                        42.7-48.3
+                        87.88-48.3
+                        94
+                        0
+                        111.28
+                        61.9
+                        111.28
+                        142.3V448z"/>
+
                     </svg>
+
                 </a>
+
             </div>
 
         </div>
 
     </div>
 
+</div>
+
+
 <script>
+
 function joinRoom() {
+
     const name = document.getElementById("username").value.trim();
+
     const room = document.getElementById("roomId").value.trim();
 
     if(name && room){
+
         localStorage.setItem("username", name);
+
         window.location.href = `meeting.html?room=${room}`;
+
     } else {
+
         alert("Please enter your name and room ID");
+
     }
+
 }
+
 </script>
 
 </body>

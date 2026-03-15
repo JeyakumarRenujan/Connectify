@@ -515,3 +515,20 @@ body {
     border-radius: 6px;
     font-size: 13px;
 }
+
+.team-footer-wrapper{
+    width:100%;
+    text-align:center;
+}
+
+.team-title{
+    font-size:18px;
+    color:#aaa;
+    margin-bottom:15px;
+    letter-spacing:1px;
+}
+
+.team-role{
+    font-size:12px;
+    color:#888;
+}
