@@ -607,6 +607,9 @@ function toggleMute() {
         btn.innerHTML = isMuted
             ? '<i class="fa-solid fa-microphone-slash"></i>'
             : '<i class="fa-solid fa-microphone"></i>';
+
+        btn.classList.toggle("off-state", isMuted);
+        btn.classList.toggle("active-state", !isMuted);
     }
 
     socket.emit("mute-status", isMuted);
@@ -643,6 +646,9 @@ function toggleVideo() {
         btn.innerHTML = isOn
             ? '<i class="fa-solid fa-video"></i>'
             : '<i class="fa-solid fa-video-slash"></i>';
+
+        btn.classList.toggle("off-state", !isOn);
+        btn.classList.toggle("active-state", isOn);
     }
 
     socket.emit("camera-status", isOn);

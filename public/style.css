@@ -429,6 +429,21 @@ body {
     transform: translateY(-1px);
 }
 
+.control-btn.off-state {
+    background: #b3261e !important;
+    color: white;
+    border: none;
+}
+
+.control-btn.off-state:hover {
+    background: #8f1f19 !important;
+}
+
+.control-btn.active-state {
+    background: #2b2b2b;
+    color: white;
+}
+
 .icon-btn {
     width: 58px;
     height: 46px;
